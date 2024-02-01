@@ -22,6 +22,6 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const commentModel = mongoose.Model("Comment", commentSchema);
+const Comment = mongoose.Model("Comment", commentSchema);
 
-export default commentModel;
+export default Comment;
