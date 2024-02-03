@@ -4,11 +4,9 @@ const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true,
     },
     lastName: {
       type: String,
-      required: true,
     },
     username: {
       type: String,
@@ -28,7 +26,10 @@ const userSchema = new mongoose.Schema(
     },
     cPassword: {
       type: String,
-      required: true,
+    },
+    role: {
+      type: String,
+      default: "user",
     },
     profilePicture: {
       type: String,
@@ -41,10 +42,11 @@ const userSchema = new mongoose.Schema(
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    token: [{ type: String }],
   },
   { timestamps: true }
 );
 
-const User = mongoose.Model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;
