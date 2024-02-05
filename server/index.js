@@ -10,7 +10,7 @@ const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT;
 const app = express();
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.json());
 
 mongoose.connect(MONGO_URL).then(() => console.log("connected to database"));

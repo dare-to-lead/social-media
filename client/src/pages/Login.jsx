@@ -34,15 +34,12 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function Login() {
   const history = useNavigate();
   const [inputs, setInputs] = useState({
-    firstname: "",
-    lastname: "",
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -54,13 +51,10 @@ export default function SignUp() {
 
   const sendRequest = async () => {
     const response = await axios
-      .post("http://localhost:8080/api/signup", {
-        firstName: inputs.firstname,
-        lastName: inputs.lastname,
+      .post("http://localhost:8080/api/login", {
         username: inputs.username,
         email: inputs.email,
         password: inputs.password,
-        cPassword: inputs.confirmPassword,
       })
       .catch((err) => console.log(err));
     const data = await response.data;
@@ -68,7 +62,7 @@ export default function SignUp() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest().then(() => history("/login"));
+    sendRequest().then(() => history("/profile"));
   };
 
   return (
@@ -83,7 +77,7 @@ export default function SignUp() {
             alignItems: "center",
           }}>
           <Typography component="h1" variant="h5">
-            Sign up
+            Login
           </Typography>
           <Box
             component="form"
@@ -91,31 +85,6 @@ export default function SignUp() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstname"
-                  value={inputs.firstname}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                  id="firstname"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  value={inputs.lastname}
-                  onChange={handleChange}
-                  id="lastname"
-                  label="Last Name"
-                  name="lastname"
-                  autoComplete="family-name"
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -153,18 +122,7 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  value={inputs.confirmPassword}
-                  onChange={handleChange}
-                  name="confirmPassword"
-                  label="confirm Password"
-                  type="password"
-                  id="confirmPassword"
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
@@ -179,12 +137,12 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
-              Sign Up
+              Login
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
+                <Link href="/signup" variant="body2">
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
