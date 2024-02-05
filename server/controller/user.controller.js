@@ -63,7 +63,8 @@ const login = async (req, res) => {
 
 const verifyToken = (req, res, next) => {
   const cookies = req.headers.cookie;
-  const token = cookies.split("=")[2];
+  console.log("cookies",cookies)
+  const token = cookies.split("=")[1];
   console.log("verify", token);
   if (!token) {
     return res.status(404).json({ message: "No token found" });
@@ -95,7 +96,8 @@ const getUser = async (req, res) => {
 
 const refreshToken = (req, res, next) => {
   const cookies = req.headers.cookie;
-  const prevToken = cookies.split("=")[2];
+  console.log("cookies",cookies)
+  const prevToken = cookies.split("=")[1];
 
   if (!prevToken) {
     return res.status(400).json({ message: "Couldn't find token" });
