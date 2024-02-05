@@ -40,8 +40,16 @@ const login = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid email / password" });
     }
     const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, {
-      expiresIn: "1hr",
+      expiresIn: "30s",
     });
+    res.cookie(String(existingUser._id), token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 30), //30 seconds
+      httpOnly: true,
+      sameSite: "lax",
+    });
+    console.log("Token:", token);
+    console.log("Cookie:", res.getHeaders()["set-cookie"]);
     return res
       .status(200)
       .json({ message: "Successfully logged in", user: existingUser, token });
@@ -51,9 +59,9 @@ const login = async (req, res, next) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const headers = req.headers[`authorization`];
-  // console.log(headers);
-  const token = headers.split(" ")[1];
+  const cookies = req.headers.cookie;
+  const token = cookies.split("=")[2];
+  console.log(token);
   if (!token) {
     return res.status(404).json({ message: "No token found" });
   }
@@ -61,13 +69,13 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(400).json({ message: "Invalid Token" });
     }
-    // console.log(user.id);
+    console.log(user.id);
     req.id = user.id;
   });
   next();
 };
 
-const getUser = async (req, res, next) => {
+const getUser = async (req, res) => {
   const userId = req.id;
   let user;
   try {
