@@ -1,14 +1,32 @@
-import Grid from '@mui/material/Grid'; 
+import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery, Box } from "@mui/material";
-import Profile from '../components/profile/Profile';
-import Posts from '../components/post/Posts';
-import Trending from '../components/Trending/Trending';
+import Profile from "../components/profile/Profile";
+import Posts from "../components/post/Posts";
+import Trending from "../components/Trending/Trending";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const Home = () => {
+  const [user, setUser] = useState();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.between("md", "lg"));
+
+  const sendRequest = async () => {
+    const response = await axios
+      .get("http://localhost:8080/api/user", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+    const data = await response.data;
+    return data;
+  };
+
+  useEffect(() => {
+    sendRequest().then((data) => setUser(data.user));
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -44,6 +62,6 @@ const Home = () => {
       </Grid>
     </Box>
   );
-}
+};
 
 export default Home;
