@@ -23,45 +23,48 @@ const signup = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
-    if (!existingUser) {
-      return res.status(400).json({ message: "User not found. Signup please" });
-    }
-    const isPasswordCorrect = bcrypt.compareSync(
-      password,
-      existingUser.password
-    );
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid email / password" });
-    }
-    const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, {
-      expiresIn: "30s",
-    });
-    res.cookie(String(existingUser._id), token, {
-      path: "/",
-      expires: new Date(Date.now() + 1000 * 30), //30 seconds
-      httpOnly: true,
-      sameSite: "lax",
-    });
-    console.log("Token:", token);
-    console.log("Cookie:", res.getHeaders()["set-cookie"]);
-    return res
-      .status(200)
-      .json({ message: "Successfully logged in", user: existingUser, token });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    return new Error(err);
   }
+  if (!existingUser) {
+    return res.status(400).json({ message: "User not found. Signup please" });
+  }
+  const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
+  if (!isPasswordCorrect) {
+    return res.status(400).json({ message: "Invalid email / password" });
+  }
+  const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, {
+    expiresIn: "35s",
+  });
+
+  console.log("generated token\n", token);
+
+  if (req.cookies[`${existingUser._id}`]) {
+    req.cookies[`${existingUser._id}`] = "";
+  }
+  res.cookie(String(existingUser._id), token, {
+    path: "/",
+    expires: new Date(Date.now() + 1000 * 30), //30 seconds
+    httpOnly: true,
+    sameSite: "lax",
+  });
+  // console.log("Token:", token);
+  // console.log("Cookie:", res.getHeaders()["set-cookie"]);
+  return res
+    .status(200)
+    .json({ message: "Successfully logged in", user: existingUser, token });
 };
 
 const verifyToken = (req, res, next) => {
   const cookies = req.headers.cookie;
   const token = cookies.split("=")[2];
-  console.log(token);
+  console.log("verify", token);
   if (!token) {
     return res.status(404).json({ message: "No token found" });
   }
@@ -77,15 +80,48 @@ const verifyToken = (req, res, next) => {
 
 const getUser = async (req, res) => {
   const userId = req.id;
+  console.log(userId);
   let user;
   try {
     user = await User.findById(userId, "-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    return res.status(200).json({ user });
   } catch (error) {
-    return res.status(404).json({ message: error.message });
+    return new Error(err);
   }
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({ user });
 };
-export { signup, login, verifyToken, getUser };
+
+const refreshToken = (req, res, next) => {
+  const cookies = req.headers.cookie;
+  const prevToken = cookies.split("=")[2];
+
+  if (!prevToken) {
+    return res.status(400).json({ message: "Couldn't find token" });
+  }
+  jwt.verify(String(prevToken), JWT_SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(403).json({ message: "Authentication failed" });
+    }
+    res.clearCookie(`${user.id}`);
+    req.cookies[`${user.id}`] = "";
+
+    const token = jwt.sign({ id: user.id }, JWT_SECRET_KEY, {
+      expiresIn: "35s",
+    });
+
+    console.log("regenrated token\n", token);
+
+    res.cookie(String(user.id), token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 30), //35 seconds
+      httpOnly: true,
+      sameSite: "lax",
+    });
+    req.id = user.id;
+    next();
+  });
+};
+export { signup, login, verifyToken, getUser, refreshToken };
