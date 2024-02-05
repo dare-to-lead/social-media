@@ -165,14 +165,6 @@ export default function SignUp() {
                   id="confirmPassword"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"

@@ -53,15 +53,14 @@ function ProjectSlider() {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1, position: "relative", mt:3 }}>
+    <Box sx={{ maxWidth: 400, flexGrow: 1, position: "relative", mt: 3 }}>
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
         onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
+        enableMouseEvents>
         {images.map((step, index) => (
-          <div key={step.label} style={{ position: "relative"}}>
+          <div key={step.label} style={{ position: "relative" }}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
                 component="img"
@@ -89,8 +88,7 @@ function ProjectSlider() {
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 padding: 1,
                 opacity: 0.9,
-              }}
-            >
+              }}>
               <Typography sx={{ color: "white", textAlign: "center", mb: 1 }}>
                 {step.label}
               </Typography>
@@ -105,8 +103,7 @@ function ProjectSlider() {
                     bgcolor: "white",
                     ":hover": { bgcolor: "#2196F3", color: "white" },
                     mr: 1,
-                  }}
-                >
+                  }}>
                   <VisibilityIcon />
                 </IconButton>
                 <IconButton
@@ -119,8 +116,7 @@ function ProjectSlider() {
                     bgcolor: "white",
                     ":hover": { bgcolor: "#2196F3", color: "white" },
                     ml: 1,
-                  }}
-                >
+                  }}>
                   <GitHubIcon />
                 </IconButton>
               </Box>
@@ -136,8 +132,7 @@ function ProjectSlider() {
           <Button
             size="small"
             onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
+            disabled={activeStep === maxSteps - 1}>
             Next
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />

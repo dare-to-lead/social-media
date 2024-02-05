@@ -62,7 +62,7 @@ export default function Login() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest().then(() => history("/profile"));
+    sendRequest().then(() => history("/"));
   };
 
   return (
@@ -89,18 +89,6 @@ export default function Login() {
                 <TextField
                   required
                   fullWidth
-                  value={inputs.username}
-                  onChange={handleChange}
-                  id="username"
-                  label="User Name"
-                  name="username"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
                   value={inputs.email}
                   onChange={handleChange}
                   id="email"
@@ -120,15 +108,6 @@ export default function Login() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive updates via email."
                 />
               </Grid>
             </Grid>
