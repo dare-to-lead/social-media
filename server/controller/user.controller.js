@@ -58,7 +58,6 @@ const login = async (req, res) => {
 
 const verifyToken = (req, res, next) => {
   const cookies = req.headers.cookie;
-  console.log("cookies",cookies)
   if (!cookies) {
     return res.status(404).json({ message: "No cookies found" });
   }
@@ -98,11 +97,6 @@ const getUser = async (req, res) => {
   return res.status(200).json({ user });
 };
 
-
-const refreshToken = (req, res, next) => {
-  const cookies = req.headers.cookie;
-  console.log("cookies",cookies)
-  const prevToken = cookies.split("=")[1];
 // const refreshToken = (req, res, next) => {
 //   const cookies = req.headers.cookie;
 //   const prevToken = cookies.split("=")[2];
@@ -123,19 +117,6 @@ const refreshToken = (req, res, next) => {
 //     });
 
 //     console.log("regenrated token\n", token);
-
-
-    res.cookie(String(user.id), token, {
-      path: "/",
-      expires: new Date(Date.now() + 1000 * 30), //35 seconds
-      httpOnly: true,
-      sameSite: "lax",
-    });
-    req.id = user.id;
-    next();
-  });
-};
-export { signup, login, verifyToken, getUser, refreshToken };
 
 //     res.cookie(String(user.id), token, {
 //       path: "/",
