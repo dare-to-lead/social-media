@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -11,6 +11,11 @@ import {
 } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import logo from "../../assets/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { authActions } from "../../redux/slices/authSlice";
+import MenuListComposition from "./Menu";
+axios.defaults.withCredentials = true;
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -60,11 +65,49 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const [darkMode, setDarkMode] = React.useState(false);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [darkMode, setDarkMode] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const sendLogoutRequest = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/logout",
+        null,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        return response;
+      }
+      throw new Error("Unable to Logout. Please try again");
+    } catch (error) {
+      console.error("Logout Error:", error);
+      throw error; // Rethrow the error for further handling
+    }
+  };
+
+  const handleLogout = () => {
+    sendLogoutRequest()
+      .then(() => dispatch(authActions.logout()))
+      .catch((error) => {
+        console.error("Logout Error:", error);
+      });
+  };
 
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
     // Add your dark mode toggle logic here
+  };
+
+  const handleMenu = () => {
+    setMenuOpen((prevMenuOpen) => !prevMenuOpen); // Toggle menu visibility
+  };
+
+  const handleCloseMenu = () => {
+    setMenuOpen(false); // Close menu
   };
 
   return (
@@ -79,10 +122,21 @@ const Navbar = () => {
               control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
             />
           </FormGroup>
-          <Avatar
-            alt="Profile Avatar"
-            src="https://example.com/path-to-avatar.jpg"
-          />
+          {isLoggedIn && (
+            <div>
+              <Avatar
+                alt="Profile Avatar"
+                src="https://example.com/path-to-avatar.jpg"
+                onClick={handleMenu}
+              />
+              {menuOpen && (
+                <MenuListComposition
+                  handleClose={handleCloseMenu}
+                  handleLogout={handleLogout}
+                />
+              )}
+            </div>
+          )}
         </Box>
       </Toolbar>
     </AppBar>
