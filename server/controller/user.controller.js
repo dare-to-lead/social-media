@@ -128,7 +128,6 @@ const getUser = async (req, res) => {
 //     next();
 //   });
 // };
-
 const logout = (req, res) => {
   const cookies = req.headers.cookie;
   const prevToken = cookies.split("=")[1];
@@ -145,3 +144,4 @@ const logout = (req, res) => {
   });
 };
 export { signup, login, verifyToken, getUser, logout };
+

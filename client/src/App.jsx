@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/Signup";
 import Login from "./pages/Login";
 import { useSelector } from "react-redux";
+import UserProfile from "./pages/UserProfile";
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<UserProfile/>}/>
       </Routes>
     </BrowserRouter>
   );

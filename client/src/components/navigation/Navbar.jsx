@@ -114,15 +114,7 @@ const Navbar = () => {
     <AppBar position="static" sx={{ bgcolor: "#f4f4fd" }}>
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-          <img src={logo} alt="" style={{ width: "50px" }} />
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <FormGroup>
-            <FormControlLabel
-              control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-            />
-          </FormGroup>
-          {isLoggedIn && (
+        {isLoggedIn && (
             <div>
               <Avatar
                 alt="Profile Avatar"
@@ -137,6 +129,13 @@ const Navbar = () => {
               )}
             </div>
           )}
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <FormGroup>
+            <FormControlLabel
+              control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+            />
+          </FormGroup>
         </Box>
       </Toolbar>
     </AppBar>
