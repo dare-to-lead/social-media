@@ -28,6 +28,8 @@ const Home = () => {
     sendRequest().then((data) => setUser(data.user));
   }, []);
 
+  console.log(user);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3}>

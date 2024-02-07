@@ -40,12 +40,12 @@ const login = async (req, res) => {
     return res.status(400).json({ message: "Invalid email / password" });
   }
   const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, {
-    expiresIn: "35s",
+    expiresIn: "1d",
   });
 
   res.cookie(String(existingUser._id), token, {
     path: "/",
-    expires: new Date(Date.now() + 1000 * 30), //30 seconds
+    expires: new Date(Date.now() + 1000 * 24 * 60 * 60),
     httpOnly: true,
     sameSite: "lax",
   });
@@ -128,4 +128,20 @@ const getUser = async (req, res) => {
 //     next();
 //   });
 // };
-export { signup, login, verifyToken, getUser };
+const logout = (req, res) => {
+  const cookies = req.headers.cookie;
+  const prevToken = cookies.split("=")[1];
+  if (!prevToken) {
+    return res.status(400).json({ message: "Couldn't find token" });
+  }
+  jwt.verify(String(prevToken), JWT_SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(403).json({ message: "Authentication failed" });
+    }
+    res.clearCookie(`${user.id}`);
+    return res.status(200).json({ message: "Successfully Logged Out" });
+  });
+};
+export { signup, login, verifyToken, getUser, logout };
+

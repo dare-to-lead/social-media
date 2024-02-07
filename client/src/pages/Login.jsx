@@ -12,6 +12,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authActions } from "../redux/slices/authSlice";
 
 function Copyright(props) {
   return (
@@ -35,6 +37,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Login() {
+  const dispatch = useDispatch();
   const history = useNavigate();
   const [inputs, setInputs] = useState({
     username: "",
@@ -62,7 +65,9 @@ export default function Login() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest().then(() => history("/"));
+    sendRequest()
+      .then(() => dispatch(authActions.login()))
+      .then(() => history("/"));
   };
 
   return (

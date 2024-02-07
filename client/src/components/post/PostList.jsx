@@ -15,7 +15,7 @@ const PostList = () => {
     >
       {[1, 2, 3, 4, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33].map(
         (p, i) => (
-          <PostCard key={i} />
+          <PostCard key={i}/>
         )
       )}
     </Stack>
