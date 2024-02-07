@@ -5,17 +5,19 @@ const initialState = {
   user: null,
 };
 
-const login = createAsyncThunk("user/login", async (data) => {
-  const { data } = axios.get("");
+export const login = createAsyncThunk("user/login", async (userdata) => {
+  // console.log(userdata);
+  const { data } = await axios.post(
+    "http://localhost:8080/api/login",
+    userdata
+  );
   return data;
 });
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    login: () => {},
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -23,7 +25,8 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "idle";
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
       })
       .addCase(login.rejected, (state) => {
         state.status = "idle";
@@ -31,4 +34,4 @@ const userSlice = createSlice({
   },
 });
 
-const {} = userSlice;
+export default userSlice.reducer;

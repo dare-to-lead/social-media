@@ -10,10 +10,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authActions } from "../redux/slices/authSlice";
+import { login } from "../redux/slices/userSlice";
 
 function Copyright(props) {
   return (
@@ -52,22 +51,26 @@ export default function Login() {
     }));
   };
 
-  const sendRequest = async () => {
-    const response = await axios
-      .post("http://localhost:8080/api/login", {
-        username: inputs.username,
+  const sendRequest = () => {
+    dispatch(
+      login({
         email: inputs.email,
         password: inputs.password,
       })
-      .catch((err) => console.log(err));
-    const data = await response.data;
-    return data;
+    );
+    // const response = await axios
+    //   .post("http://localhost:8080/api/login", {
+    //     email: inputs.email,
+    //     password: inputs.password,
+    //   })
+    //   .catch((err) => console.log(err));
+    // const data = await response.data;
+    // return data;
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest()
-      .then(() => dispatch(authActions.login()))
-      .then(() => history("/"));
+    sendRequest();
+    history("/");
   };
 
   return (

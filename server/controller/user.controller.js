@@ -144,4 +144,3 @@ const logout = (req, res) => {
   });
 };
 export { signup, login, verifyToken, getUser, logout };
-
