@@ -15,19 +15,19 @@ const UserProfile = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.between("md", "lg"));
 
-  const sendRequest = async () => {
-    const response = await axios
-      .get("http://localhost:8080/api/user", {
-        withCredentials: true,
-      })
-      .catch((err) => console.log(err));
-    const data = await response.data;
-    return data;
-  };
+  // const sendRequest = async () => {
+  //   const response = await axios
+  //     .get("http://localhost:8080/api/user", {
+  //       withCredentials: true,
+  //     })
+  //     .catch((err) => console.log(err));
+  //   const data = await response.data;
+  //   return data;
+  // };
 
-  useEffect(() => {
-    sendRequest().then((data) => setUser(data.user));
-  }, []);
+  // useEffect(() => {
+  //   sendRequest().then((data) => setUser(data.user));
+  // }, []);
 
   console.log(user);
 

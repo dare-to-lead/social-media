@@ -5,12 +5,12 @@ import {
   Box,
   IconButton,
   Typography,
-  Divider
+  Divider,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
-import ImageIcon from '@mui/icons-material/Image';
-import VideocamIcon from '@mui/icons-material/Videocam';
+import ImageIcon from "@mui/icons-material/Image";
+import VideocamIcon from "@mui/icons-material/Videocam";
 import ProfilePosts from "./ProfilePosts";
 
 const ProfileSection = () => {
@@ -54,10 +54,13 @@ const ProfileSection = () => {
           <EditIcon />
         </IconButton>
       </Box>
-      <Box sx={{ mt: 5, display: "flex", pb:2}}>
+      <Box sx={{ mt: 5, display: "flex", pb: 2 }}>
         <Container sx={{ borderRight: "1.2px solid #1876D0" }}>
-          <Typography variant="h6" sx={{ fontWeight: "bold", color:"#1876D0" }}>
-            Anjum Shaikh
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "bold", color: "#1876D0" }}
+          >
+            John Doe
           </Typography>
           <Typography>Full Stack Developer</Typography>
           <Typography>5 April 1996</Typography>
@@ -68,37 +71,66 @@ const ProfileSection = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexWrap:'wrap'
           }}
         >
           <Container
             sx={{
+              flex:1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold", color:"#1876D0" }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", color: "#1876D0" }}
+            >
               200K
             </Typography>
             <Typography sx={{ color: "gray" }}>Following</Typography>
           </Container>
           <Container
             sx={{
+              flex:1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold", color:"#1876D0" }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", color: "#1876D0" }}
+            >
               2.3M
             </Typography>
             <Typography sx={{ color: "gray" }}>Followers</Typography>
           </Container>
         </Container>
       </Box>
-      <Divider sx={{mx:3}}/>
-      <Box sx={{pt:2, maxHeight:"calc(100vh - 340px)", overflow:"scroll"}}>
-        <ProfilePosts/>
+      <Divider sx={{ mx: 3 }} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          bgcolor:"#f4f4fd"
+        }}
+      >
+        <Container sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
+          <IconButton>
+          <ImageIcon sx={{height:"2rem", width:"2rem"}} color="primary"/>
+          </IconButton>
+        </Container>
+
+        <Container sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
+          <IconButton >
+            <VideocamIcon sx={{height:"2rem", width:"2rem"}}/>
+          </IconButton>
+        </Container>
+      </Box>
+      <Box sx={{ pt: 2, maxHeight: "calc(100vh - 400px)", overflow: "scroll" }}>
+        <ProfilePosts />
       </Box>
     </Paper>
   );
