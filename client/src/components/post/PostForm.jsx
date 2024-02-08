@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ImageIcon from "@mui/icons-material/Image";
 import UploadIcon from "@mui/icons-material/Upload";
 import {
@@ -11,12 +12,27 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
+import { createPost } from "../../redux/slices/postSlice";
 
 export default function PostForm() {
-  const [type, setType] = React.useState("");
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+  const [type, setType] = useState("post");
+  const [img, setImg] = useState(null); // Fix: Initialize img state as null
+  const [content, setContent] = useState("");
 
   const handleChange = (event) => {
     setType(event.target.value);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImg(file);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+      dispatch(createPost({ user: user._id, content, image: img }));
   };
 
   return (
@@ -56,11 +72,19 @@ export default function PostForm() {
           id="outlined-basic"
           label="Content"
           variant="outlined"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
       </FormControl>
       <Box>
         <label htmlFor="image">
-          <input type="file" id="image" style={{ display: "none" }} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            id="image"
+            style={{ display: "none" }}
+          />
           <IconButton
             color="primary"
             component="span"
@@ -76,6 +100,8 @@ export default function PostForm() {
           component="span"
           variant="contained"
           sx={{ marginTop: 2 }}
+          onClick={handleSubmit}
+          disabled={!content.trim() || !img}
         >
           <UploadIcon />
         </Button>
