@@ -30,24 +30,7 @@ const createPost = async (req, res) => {
 };
 
 const editPost = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { content } = req.body;
 
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      { content },
-      { new: true }
-    );
-
-    if (!updatedPost) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    res.json(updatedPost);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 };
 
 const deletePost = async (req, res) => {

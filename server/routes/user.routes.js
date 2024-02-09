@@ -1,19 +1,19 @@
 import express from "express";
 import {
+  deleteUser,
+  editProfilePicture,
+  editUser,
+  getAllusers,
   getUser,
-  login,
-  logout,
-  // refreshToken,
-  signup,
-  verifyToken,
 } from "../controller/user.controller.js";
 
 const userRouter = express.Router();
 
-userRouter.post("/signup", signup);
-userRouter.post("/login", login);
-userRouter.get("/user", verifyToken, getUser);
-userRouter.post("/logout", verifyToken, logout);
-// userRouter.get("/refresh", refreshToken, verifyToken, getUser);
+userRouter.get("/allUsers", getAllusers);
+userRouter.get("/", getUser);
+userRouter.put("/:id", editUser);
+userRouter.put("/profile/:id", editProfilePicture);
+userRouter.put("/cover/:id", editProfilePicture);
+userRouter.delete("/:id", deleteUser);
 
 export default userRouter;
