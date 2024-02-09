@@ -12,8 +12,18 @@ import React from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import ProfilePosts from "./ProfilePosts";
+import ProfileForm from "./ProfileForm";
 
 const ProfileSection = () => {
+  const [open, setOpen] = React.useState(true);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Paper sx={{ height: "100vh" }}>
       <Box sx={{ position: "relative", width: "100%" }}>
@@ -50,6 +60,7 @@ const ProfileSection = () => {
             color: "white",
             ":hover": { bgcolor: "white", color: "#2196F3" },
           }}
+          onClick={handleClickOpen}
         >
           <EditIcon />
         </IconButton>
@@ -132,6 +143,7 @@ const ProfileSection = () => {
       <Box sx={{ pt: 2, maxHeight: "calc(100vh - 400px)", overflow: "scroll" }}>
         <ProfilePosts />
       </Box>
+      <ProfileForm open={open} setOpen={setOpen}/>
     </Paper>
   );
 };

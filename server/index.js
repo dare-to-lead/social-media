@@ -4,8 +4,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 dotenv.config();
-import userRoutes from "./routes/user.routes.js";
+import authRouter from "./routes/auth.routes.js";
 import postRouter from "./routes/post.routes.js";
+import userRouter from "./routes/user.routes.js";
 
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT;
@@ -16,7 +17,8 @@ app.use(express.json());
 
 mongoose.connect(MONGO_URL).then(() => console.log("connected to database"));
 
-app.use("/api", userRoutes);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 
 app.listen(PORT, () => {

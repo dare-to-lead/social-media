@@ -8,11 +8,17 @@ const initialState = {
 export const login = createAsyncThunk("user/login", async (userdata) => {
   // console.log(userdata);
   const { data } = await axios.post(
-    "http://localhost:8080/api/login",
+    "http://localhost:8080/api/auth/login",
     userdata
   );
   return data;
 });
+
+export const editUser = createAsyncThunk("user/editUser", async(userData)=>{
+  console.log(userData)
+  const {data} = await axios.put(`http://localhost:8080/api/user/${userData.id}`, userData);
+  return data;
+})
 
 const userSlice = createSlice({
   name: "user",
@@ -30,7 +36,10 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state) => {
         state.status = "idle";
-      });
+      })
+      .addCase(editUser.fulfilled, (state)=>{
+        console.log("User is edited")
+      })
   },
 });
 
