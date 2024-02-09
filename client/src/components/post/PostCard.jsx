@@ -14,9 +14,10 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-const PostCard = () => {
+const PostCard = ({post}) => {
+  console.log(post.user)
   return (
-    <Card sx={{ width: "60%", minWidth: "350px", minHeight: "500px" }}>
+    <Card sx={{ width: "60%", minWidth: "350px"}}>
         <CardContent
           sx={{
             display: "flex",
@@ -24,13 +25,13 @@ const PostCard = () => {
             justifyContent: "space-between",
           }}
         >
-          <Avatar sx={{ height: "60px", width: "60px" }}>A</Avatar>
+          <Avatar sx={{ height: "60px", width: "60px" }} src={post.user.profilePicture}/>
           <Container>
             <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              John Doe
+              {post.user.firstName} {post.user.lastName}
             </Typography>
             <Typography variant="body2" sx={{ color: "gray" }}>
-              100K followers
+              {post.user.followers.length} followers
             </Typography>
           </Container>
           <IconButton>
@@ -39,14 +40,13 @@ const PostCard = () => {
         </CardContent>
       <CardContent>
         <Typography variant="body1" mb={1} mt={-2}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-          fringilla justo ut metus vehicula, vitae fringilla odio fermentum.
+         {post.content}
         </Typography>
         <CardMedia
           component="img"
           height="50%"
           sx={{ objectFit: "cover", borderRadius: 2 }}
-          image="https://plus.unsplash.com/premium_photo-1665657351435-96c58da04fd1?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          image={post.image}
           alt="Post Image"
         />
       </CardContent>

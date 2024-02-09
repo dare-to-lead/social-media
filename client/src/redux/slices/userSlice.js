@@ -3,6 +3,8 @@ import axios from "axios";
 
 const initialState = {
   user: null,
+  status: "idle",
+  token: null,
 };
 
 export const login = createAsyncThunk("user/login", async (userdata) => {

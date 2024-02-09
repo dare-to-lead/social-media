@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
@@ -13,7 +13,6 @@ import {
   TextField,
   Slide,
   Button,
-  Avatar,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { editUser } from "../../redux/slices/userSlice";
@@ -23,18 +22,34 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function ProfileForm({ open, setOpen }) {
-  const user = useSelector((state)=>state);
+  const user = useSelector(state => state.user.user); // Directly select user object
   const dispatch = useDispatch();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [profession, setProfession] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+
+  const formattedDate = useMemo(() => {
+    if (!user?.dateOfBirth) return ""; // Handle case when dateOfBirth is undefined
+  
+    const d = new Date(user?.dateOfBirth);
+    if (isNaN(d.getTime())) return ""; // Handle case when dateOfBirth is invalid
+  
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }, [user?.dateOfBirth]);
+  // Memoize the formatted date
+
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [username, setUsername] = useState(user?.username || "");
+  const [profession, setProfession] = useState(user?.profession || "");
+  const [dateOfBirth, setDateOfBirth] = useState(formattedDate || "");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let id = "65c08e6bb2256cd224a334cc";
-    dispatch(editUser({id,firstName, lastName, username, dateOfBirth, profession}))
+    let id = user._id;
+    dispatch(
+      editUser({ id, firstName, lastName, username, dateOfBirth, profession })
+    );
   };
 
   const handleClose = () => {
@@ -82,7 +97,6 @@ export default function ProfileForm({ open, setOpen }) {
               onSubmit={handleSubmit}
               sx={{ width: "100%" }}
             >
-
               <TextField
                 margin="normal"
                 fullWidth
@@ -105,7 +119,6 @@ export default function ProfileForm({ open, setOpen }) {
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{ marginBottom: 2 }}
               />
-              {/* Display profession */}
               <TextField
                 margin="normal"
                 fullWidth
@@ -114,7 +127,6 @@ export default function ProfileForm({ open, setOpen }) {
                 onChange={(e) => setProfession(e.target.value)}
                 sx={{ marginBottom: 2 }}
               />
-              {/* Display date of birth */}
               <TextField
                 margin="normal"
                 fullWidth

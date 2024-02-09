@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import userSlice from "./userSlice";
 
 const initialState = {
   posts: [],
+  createStatus: "idle",
+  editStatus: "idle",
+  deleteStatus: "idle",
 };
 
 const getPosts = createAsyncThunk("posts/getPosts", async () => {
@@ -15,11 +17,11 @@ const getPosts = createAsyncThunk("posts/getPosts", async () => {
   }
 });
 
-const createPost = createAsyncThunk("posts/createPosts", async (postData) => {
-    const formData = new FormData();
-    formData.append("image", postData.image);
-    formData.append("content", postData.content);
-    formData.append("user", postData.user);
+const createPost = createAsyncThunk("posts/createPost", async (postData) => {
+  const formData = new FormData();
+  formData.append("image", postData.image);
+  formData.append("content", postData.content);
+  formData.append("user", postData.user);
   try {
     const { data } = await axios.post(
       "http://localhost:8080/api/post",
@@ -88,7 +90,7 @@ const postSlice = createSlice({
       .addCase(editPost.pending, (state) => {
         state.editStatus = "loading";
       })
-      .addCase(editPost.fulfilled, (state, action) => {
+      .addCase(editPost.fulfilled, (state) => {
         state.editStatus = "idle";
       })
       .addCase(editPost.rejected, (state) => {
@@ -107,4 +109,4 @@ const postSlice = createSlice({
 });
 
 export { createPost, getPosts, deletePost, editPost };
-export default userSlice.reducer;
+export default postSlice.reducer;
