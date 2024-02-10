@@ -8,7 +8,7 @@ import UserProfile from "./pages/UserProfile";
 
 const App = () => {
   const user = useSelector((state) => state.user);
-  console.log("user", user);
+  // console.log("user", user);
   return (
     <BrowserRouter>
       <Routes>
