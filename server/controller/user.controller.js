@@ -23,7 +23,7 @@ const editUser = async (req, res) => {
     console.log("params: ", req.params);
     console.log("body: ", req.body);
     const updatedUser = await User.findById(id);
-    console.log(updatedUser)
+    console.log(updatedUser);
     updatedUser.firstName = firstName;
     updatedUser.lastName = lastName;
     updatedUser.username = username;
@@ -37,7 +37,7 @@ const editUser = async (req, res) => {
 const editProfilePicture = async (req, res) => {
   try {
     const { path } = req.file;
-    const {id} = req.params;
+    const { id } = req.params;
     const cloudinaryResponse = await uploadOnCloudinary(path);
     // console.log(cloudinaryResponse)
     const editedUser = await User.findById(id);
@@ -45,7 +45,7 @@ const editProfilePicture = async (req, res) => {
     await editedUser.save();
     res.status(201).json(editedUser);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -59,6 +59,7 @@ const deleteUser = async (req, res) => {
   try {
   } catch (error) {}
 };
+
 
 export {
   getAllusers,

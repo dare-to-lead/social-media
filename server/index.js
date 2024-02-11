@@ -3,10 +3,12 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-dotenv.config();
 import authRouter from "./routes/auth.routes.js";
 import postRouter from "./routes/post.routes.js";
 import userRouter from "./routes/user.routes.js";
+import likeRouter from "./routes/like.routes.js";
+import followRouter from "./routes/follow.routes.js";
+dotenv.config();
 
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT;
@@ -20,6 +22,8 @@ mongoose.connect(MONGO_URL).then(() => console.log("connected to database"));
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
+app.use("/api/like", likeRouter);
+app.use("/api/follow", followRouter);
 
 app.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);
