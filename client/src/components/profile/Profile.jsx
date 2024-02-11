@@ -2,8 +2,12 @@ import React from "react";
 import { Paper, Typography, Box } from "@mui/material";
 import ProfileCard from "./ProfileCard";
 import FollowRequests from "../FollowRequests";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 const Profile = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <Paper sx={{ width: "100%", height:"100vh" }}>
       <ProfileCard />

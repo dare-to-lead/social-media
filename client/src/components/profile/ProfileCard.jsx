@@ -1,5 +1,7 @@
 import React from "react";
 import { Card, Container, Stack, Typography, Avatar } from "@mui/material";
+import { tokens } from "../../theme";
+import { useTheme } from "@emotion/react";
 const userData = {
   profileImage:
     "https://images.hdqwalls.com/download/girl-scifi-mask-4k-t0-3840x2400.jpg",
@@ -22,9 +24,12 @@ const ProfileCard = () => {
     joinedDate,
     dateOfBirth,
   } = userData;
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <Stack spacing={2}>
-      <Card sx={{ px: 0, py: 3, bgcolor: "#f4f4fd"}}>
+      <Card sx={{ px: 0, py: 3 }} backgroundColor={colors.blueAccent[500]}>
         <Container sx={{ position: "relative", width: "100%" }}>
           <img
             src={coverImage}
@@ -55,7 +60,7 @@ const ProfileCard = () => {
         <Typography
           align="center"
           variant="h5"
-          sx={{ fontWeight: "bold", color: "#1848f8", mt: 5 }}
+          sx={{ fontWeight: "bold", color: colors.blueAccent[500], mt: 5 }}
         >
           {firstName} {lastName}
         </Typography>

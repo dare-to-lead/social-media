@@ -16,7 +16,6 @@ const Posts = () => {
         <Grid item xs={8}>
           <Box
             sx={{
-              pt: 3,
               height: "calc(100vh - 102px)",
               overflowY: "scroll",
             }}
