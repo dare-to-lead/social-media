@@ -1,7 +1,7 @@
 import Post from "../model/post.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
-const getPosts = async (req, res) => {
+const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().populate('user');
     res.json(posts);
@@ -9,6 +9,16 @@ const getPosts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getPost = async(req, res)=>{
+  try {
+    const {postId} = req.params;
+    const post = await Post.findById(postId);
+    res.json(post);
+  } catch (error) {
+    
+  }
+}
 
 const createPost = async (req, res) => {
   try {
@@ -49,4 +59,4 @@ const deletePost = async (req, res) => {
   }
 };
 
-export { getPosts, createPost, editPost, deletePost };
+export { getPost, getAllPosts, createPost, editPost, deletePost };

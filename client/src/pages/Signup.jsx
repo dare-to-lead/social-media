@@ -54,7 +54,7 @@ export default function SignUp() {
 
   const sendRequest = async () => {
     const response = await axios
-      .post("http://localhost:8080/api/signup", {
+      .post("http://localhost:8080/auth/signup", {
         firstName: inputs.firstname,
         lastName: inputs.lastname,
         username: inputs.username,
