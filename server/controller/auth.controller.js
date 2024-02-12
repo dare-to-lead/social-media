@@ -5,8 +5,9 @@ import dotenv from "dotenv";
 dotenv.config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
-const signup = async (req, res, next) => {
+const signup = async (req, res) => {
   const { username, email, password } = req.body;
+  console.log(req.body)
 
   let existingUser;
   try {
@@ -15,7 +16,7 @@ const signup = async (req, res, next) => {
       return res.status(400).json({ message: "User already exist" });
     }
     const hashedPassword = bcrypt.hashSync(password);
-    const user = new User({ username, email, password: hashedPassword });
+    const user = new User({ username, email,firstName, lastName, password: hashedPassword });
     await user.save();
     res.status(201).json(user);
   } catch (error) {
@@ -24,6 +25,7 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res) => {
+  console.log("Hi")
   const { email, password } = req.body;
 
   let existingUser;

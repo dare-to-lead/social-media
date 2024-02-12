@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function ProfileForm({ open, setOpen }) {
-  const user = useSelector(state => state.user.user); // Directly select user object
+  const user = useSelector((state) => state.user.user) || JSON.parse(localStorage.getItem("userData")); // Directly select user object
   const dispatch = useDispatch();
 
   const formattedDate = useMemo(() => {

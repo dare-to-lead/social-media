@@ -22,14 +22,17 @@ import FollowToggle from "./FollowToggle";
 
 
 const PostCard = ({ post }) => {
+  const userData = JSON.parse(localStorage.getItem("userData"));
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [likeCount, setLieCount] = useState(post.likes.length);
-  const userId = "65c08e6bb2256cd224a334cc";
+  const userId = userData._id
+  // console.log(userId)
   const followingId = post.user._id;
+  // console.log(post._id)
 
   const checkFollowing = async () => {
     try {
@@ -48,6 +51,7 @@ const PostCard = ({ post }) => {
         `http://localhost:8080/api/like/check/${post._id}`,
         { userId }
       );
+      console.log(data)
       setLiked(data.liked);
     } catch (error) {
       console.error("Failed to check liked status:", error);
@@ -67,7 +71,7 @@ const PostCard = ({ post }) => {
     setLoading(true);
     try {
       await axios.post(`http://localhost:8080/api/like/${post._id}`, {
-        userId: "65c08e6bb2256cd224a334cc",
+        userId
       });
       checkLiked();
       getLikeCount();

@@ -13,6 +13,7 @@ export const login = createAsyncThunk("user/login", async (userdata) => {
     "http://localhost:8080/api/auth/login",
     userdata
   );
+  // console.log(data)
   return data;
 });
 
@@ -34,6 +35,8 @@ const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.status = "idle";
         state.user = action.payload.user;
+        localStorage.removeItem("userData")
+        localStorage.setItem("userData", JSON.stringify(action.payload.user))
         state.token = action.payload.token;
       })
       .addCase(login.rejected, (state) => {
