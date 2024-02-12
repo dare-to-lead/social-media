@@ -20,6 +20,7 @@ export default function PostForm() {
   const [type, setType] = useState("post");
   const [img, setImg] = useState(null); // Fix: Initialize img state as null
   const [content, setContent] = useState("");
+  //image
 
   const handleChange = (event) => {
     setType(event.target.value);
