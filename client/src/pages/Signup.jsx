@@ -54,7 +54,7 @@ export default function SignUp() {
 
   const sendRequest = async () => {
     const response = await axios
-      .post("http://localhost:8080/auth/signup", {
+      .post("http://localhost:8080/api/auth/signup", {
         firstName: inputs.firstname,
         lastName: inputs.lastname,
         username: inputs.username,
@@ -62,9 +62,9 @@ export default function SignUp() {
         password: inputs.password,
         cPassword: inputs.confirmPassword,
       })
-      .catch((err) => console.log(err));
     const data = await response.data;
-    return data;
+    // console.log(data)
+
   };
   const handleSubmit = (e) => {
     e.preventDefault();

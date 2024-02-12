@@ -15,7 +15,7 @@ import {
 import { createPost } from "../../redux/slices/postSlice";
 
 export default function PostForm() {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user) || JSON.parse(localStorage.getItem("userData"));
   const dispatch = useDispatch();
   const [type, setType] = useState("post");
   const [img, setImg] = useState(null); // Fix: Initialize img state as null

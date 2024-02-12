@@ -19,7 +19,7 @@ import { editUser } from "../../redux/slices/userSlice";
 import useDate from "../../hooks/useDate";
 
 const ProfileSection = () => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user) || JSON.parse(localStorage.getItem("userData"));
   const [open, setOpen] = React.useState(false);
   const dob = useDate(user?.dateOfBirth);
   const joinDate = useDate(user?.createdAt);

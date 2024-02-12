@@ -15,36 +15,24 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import axios from "axios";
 import { tokens } from "../../theme";
+import FollowToggle from "./FollowToggle";
 
-const FollowToggle = ({ isFollowing, handleFollow }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  return (
-    <>
-      {isFollowing ? (
-        <IconButton onClick={handleFollow}>
-          <CheckCircleIcon color="success" sx={{ fontSize: "2rem" }} />
-        </IconButton>
-      ) : (
-        <IconButton onClick={handleFollow}>
-          <AddCircleIcon sx={{ fontSize: "2rem" }} />
-        </IconButton>
-      )}
-    </>
-  );
-};
+
 
 const PostCard = ({ post }) => {
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [likeCount, setLieCount] = useState(post.likes.length);
-  const userId = "65c08e6bb2256cd224a334cc";
+  const userId = userData._id
+  // console.log(userId)
   const followingId = post.user._id;
+  // console.log(post._id)
 
   const checkFollowing = async () => {
     try {
@@ -63,6 +51,7 @@ const PostCard = ({ post }) => {
         `http://localhost:8080/api/like/check/${post._id}`,
         { userId }
       );
+      console.log(data)
       setLiked(data.liked);
     } catch (error) {
       console.error("Failed to check liked status:", error);
@@ -82,7 +71,7 @@ const PostCard = ({ post }) => {
     setLoading(true);
     try {
       await axios.post(`http://localhost:8080/api/like/${post._id}`, {
-        userId: "65c08e6bb2256cd224a334cc",
+        userId
       });
       checkLiked();
       getLikeCount();
@@ -117,7 +106,8 @@ const PostCard = ({ post }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <Avatar
           sx={{ height: "60px", width: "60px" }}
           src={post.user.profilePicture}
@@ -148,13 +138,15 @@ const PostCard = ({ post }) => {
         />
       </CardContent>
       <CardContent
-        sx={{ mt: -2, display: "flex", alignItems: "center", gap: 1 }}>
+        sx={{ mt: -2, display: "flex", alignItems: "center", gap: 1 }}
+      >
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <IconButton aria-label="like" onClick={handleLike} disabled={loading}>
             {loading ? (
               <CircularProgress size={24} color="inherit" />
@@ -171,8 +163,12 @@ const PostCard = ({ post }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-          }}>
-          <IconButton color="primary" aria-label="comment">
+          }}
+        >
+          <IconButton
+            aria-label="comment"
+            sx={{ color: colors.blueAccent[500] }}
+          >
             <CommentOutlinedIcon />
           </IconButton>
           <Typography variant="body2" sx={{ color: "gray" }}>
@@ -183,7 +179,8 @@ const PostCard = ({ post }) => {
         <IconButton
           color="primary"
           aria-label="save"
-          sx={{ marginLeft: "auto" }}>
+          sx={{ marginLeft: "auto",color: colors.blueAccent[500] }}
+        >
           <BookmarkBorderIcon />
         </IconButton>
       </CardContent>

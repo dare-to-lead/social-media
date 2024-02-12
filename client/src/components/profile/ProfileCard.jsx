@@ -1,33 +1,20 @@
 import React from "react";
 import { Card, Container, Stack, Typography, Avatar } from "@mui/material";
-const userData = {
-  profileImage:
-    "https://images.hdqwalls.com/download/girl-scifi-mask-4k-t0-3840x2400.jpg",
-  coverImage:
-    "https://images.hdqwalls.com/wallpapers/bthumb/samsung-galaxy-s9-zk.jpg",
-  firstName: "John",
-  lastName: "Doe",
-  username: "johnl123",
-  joinedDate: "2022-01-15",
-  dateOfBirth: "1995-08-10",
-};
+import { tokens } from "../../theme";
+import { useTheme } from "@emotion/react";
+
 
 const ProfileCard = () => {
-  const {
-    profileImage,
-    coverImage,
-    firstName,
-    lastName,
-    username,
-    joinedDate,
-    dateOfBirth,
-  } = userData;
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  console.log(userData.firstName)
   return (
     <Stack spacing={2}>
-      <Card sx={{ px: 0, py: 3, bgcolor: "#f4f4fd"}}>
+      <Card sx={{ px: 0, py: 3 }} backgroundColor={colors.blueAccent[500]}>
         <Container sx={{ position: "relative", width: "100%" }}>
           <img
-            src={coverImage}
+            src="https://images.hdqwalls.com/wallpapers/bthumb/samsung-galaxy-s9-zk.jpg"
             alt=""
             style={{
               width: "100%",
@@ -38,7 +25,7 @@ const ProfileCard = () => {
             }}
           />
           <Avatar
-            src={profileImage}
+            src="https://images.hdqwalls.com/download/girl-scifi-mask-4k-t0-3840x2400.jpg"
             alt=""
             sx={{
               position: "absolute",
@@ -55,12 +42,12 @@ const ProfileCard = () => {
         <Typography
           align="center"
           variant="h5"
-          sx={{ fontWeight: "bold", color: "#1848f8", mt: 5 }}
+          sx={{ fontWeight: "bold", color: colors.blueAccent[500], mt: 6 }}
         >
-          {firstName} {lastName}
+          {userData.firstName} {userData.lastName}
         </Typography>
         <Typography align="center" sx={{ color: "gray", fontSize: "14px" }}>
-          {username}
+          {userData.username}
         </Typography>
         <Container
           sx={{ display: "flex", justifyContent: "space-around", mt: 1 }}
@@ -73,7 +60,7 @@ const ProfileCard = () => {
                 textAlign: "center",
               }}
             >
-              3400
+              {userData.followers.length}
             </Typography>
             <Typography sx={{ color: "gray", textAlign: "center" }}>
               Followers
@@ -87,7 +74,7 @@ const ProfileCard = () => {
                 textAlign: "center",
               }}
             >
-              3400
+              {userData.following.length}
             </Typography>
             <Typography sx={{ color: "gray", textAlign: "center" }}>
               Following
@@ -97,14 +84,14 @@ const ProfileCard = () => {
         <hr style={{ color: "gray" }} />
         <Container sx={{ mt: 2 }}>
           <Typography>
-            <span style={{ fontWeight: "bold" }}>Profession:</span> Artist
+            <span style={{ fontWeight: "bold" }}>Profession:</span> {userData.profession}
           </Typography>
           <Typography>
-            <span style={{ fontWeight: "bold" }}>Date of Birth:</span>{" "}
-            {dateOfBirth}
+            <span style={{ fontWeight: "bold" }}>Date of Birth:</span>
+            {userData.profession}
           </Typography>
           <Typography>
-            <span style={{ fontWeight: "bold" }}>Joined On:</span> {joinedDate}
+            <span style={{ fontWeight: "bold" }}>Joined On:</span> {userData.createdAt}
           </Typography>
         </Container>
       </Card>

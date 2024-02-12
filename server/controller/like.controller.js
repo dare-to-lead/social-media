@@ -1,4 +1,4 @@
-import Like from "../model/like.model.js"
+import Like from "../model/like.model.js";
 import Post from "../model/post.model.js";
 
 const getLikes = async (req, res) => {
@@ -10,12 +10,12 @@ const getLikes = async (req, res) => {
 
 // Controller to add or remove a like
 const toggleLike = async (req, res) => {
-    console.log("done")
+  console.log("done");
   try {
     const { postId } = req.params;
-    const {userId} = req.body;
+    const { userId } = req.body;
     const existingLike = await Like.findOne({ user: userId, post: postId });
-    console.log(existingLike)
+    console.log(existingLike);
 
     if (existingLike) {
       await Like.findByIdAndDelete(existingLike._id);
@@ -42,7 +42,7 @@ const toggleLike = async (req, res) => {
 const checkLike = async (req, res) => {
   const { userId } = req.body;
   const { postId } = req.params;
-
+  // console.log(userId, postId)
   try {
     // Check if the user liked the post
     const like = await Like.findOne({ user: userId, post: postId });
