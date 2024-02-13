@@ -31,7 +31,7 @@ const PostList = () => {
           }}
         >
           {allPosts.map((post) => (
-            <PostCard key={post._id} post={post} toggleReload={toggleReload}/>
+            <PostCard key={post._id} postData={post} toggleReload={toggleReload}/>
           ))}
         </Stack>
       )}

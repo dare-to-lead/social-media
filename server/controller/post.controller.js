@@ -13,7 +13,8 @@ const getAllPosts = async (req, res) => {
 const getPost = async(req, res)=>{
   try {
     const {postId} = req.params;
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).populate('user');
+    // console.log("post", post)
     res.json(post);
   } catch (error) {
     
