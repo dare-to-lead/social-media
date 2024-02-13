@@ -7,11 +7,6 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res) => {
   const { username, email, password, firstName, lastName } = req.body;
-<<<<<<< HEAD
-  console.log(req.body);
-=======
-  console.log(req.body)
->>>>>>> 3dfec23e3f768da50294b7396776c2609e3a7ee1
 
   let existingUser;
   try {
