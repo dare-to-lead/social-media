@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   Avatar,
-  Button,
   Box,
+  Button,
   Card,
   CardContent,
-  Container,
   CardMedia,
+  CircularProgress,
+  Container,
   IconButton,
   Typography,
-  CircularProgress,
   useTheme,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -19,20 +19,23 @@ import axios from "axios";
 import { tokens } from "../../theme";
 import FollowToggle from "./FollowToggle";
 
-
-
-const PostCard = ({ post }) => {
+const PostCard = ({ postData }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [post, setPost] = useState(postData);
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [likeCount, setLieCount] = useState(post.likes.length);
-  const userId = userData._id
-  // console.log(userId)
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const userId = userData._id;
   const followingId = post.user._id;
-  // console.log(post._id)
+
+
+  const getPost = async()=>{
+    const {data} = await axios.get(`http://localhost:8080/api/post/${post._id}`);
+    setPost(data)
+  }
 
   const checkFollowing = async () => {
     try {
@@ -41,7 +44,9 @@ const PostCard = ({ post }) => {
         { userId }
       );
       setIsFollowing(data.following);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error checking following status:", error);
+    }
   };
 
   const checkLiked = async () => {
@@ -51,7 +56,6 @@ const PostCard = ({ post }) => {
         `http://localhost:8080/api/like/check/${post._id}`,
         { userId }
       );
-      console.log(data)
       setLiked(data.liked);
     } catch (error) {
       console.error("Failed to check liked status:", error);
@@ -61,17 +65,21 @@ const PostCard = ({ post }) => {
   };
 
   const getLikeCount = async () => {
-    const { data } = await axios.get(
-      `http://localhost:8080/api/post/${post._id}`
-    );
-    setLieCount(data.likes.length);
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8080/api/post/${post._id}`
+      );
+      setLikeCount(data.likes.length);
+    } catch (error) {
+      console.error("Error fetching like count:", error);
+    }
   };
 
   const handleLike = async () => {
     setLoading(true);
     try {
       await axios.post(`http://localhost:8080/api/like/${post._id}`, {
-        userId
+        userId,
       });
       checkLiked();
       getLikeCount();
@@ -88,11 +96,14 @@ const PostCard = ({ post }) => {
         `http://localhost:8080/api/follow/${followingId}`,
         { userId }
       );
-      console.log(data);
+      // console.log(data);
+      getPost()
+      checkFollowing()
     } catch (error) {
       console.log("failed to follow/unfollow");
     }
   };
+
 
   useEffect(() => {
     checkLiked();
@@ -118,11 +129,14 @@ const PostCard = ({ post }) => {
           </Typography>
           <Typography variant="body2" sx={{ color: "gray" }}>
             {post.user.followers.length}{" "}
-            {post.user.followers.length == 1 ? "follower" : "followers"}
+            {post.user.followers.length === 1 ? "follower" : "followers"}
           </Typography>
         </Container>
         {post.user._id !== userId && (
-          <FollowToggle isFollowing={isFollowing} handleFollow={handleFollow} />
+          <FollowToggle
+            isFollowing={isFollowing}
+            handleFollow={handleFollow}
+          />
         )}
       </CardContent>
       <CardContent>
@@ -165,10 +179,7 @@ const PostCard = ({ post }) => {
             alignItems: "center",
           }}
         >
-          <IconButton
-            aria-label="comment"
-            sx={{ color: colors.blueAccent[500] }}
-          >
+          <IconButton aria-label="comment" sx={{ color: colors.blueAccent[500] }}>
             <CommentOutlinedIcon />
           </IconButton>
           <Typography variant="body2" sx={{ color: "gray" }}>
@@ -179,7 +190,7 @@ const PostCard = ({ post }) => {
         <IconButton
           color="primary"
           aria-label="save"
-          sx={{ marginLeft: "auto",color: colors.blueAccent[500] }}
+          sx={{ marginLeft: "auto", color: colors.blueAccent[500] }}
         >
           <BookmarkBorderIcon />
         </IconButton>
