@@ -15,10 +15,12 @@ import {
 import { createPost } from "../../redux/slices/postSlice";
 
 export default function PostForm() {
-  const user = useSelector((state) => state.user.user) || JSON.parse(localStorage.getItem("userData"));
+  const user =
+    useSelector((state) => state.user.user) ||
+    JSON.parse(localStorage.getItem("userData"));
   const dispatch = useDispatch();
   const [type, setType] = useState("post");
-  const [img, setImg] = useState(null); // Fix: Initialize img state as null
+  const [img, setImg] = useState(null);
   const [content, setContent] = useState("");
   //image
 
@@ -33,7 +35,7 @@ export default function PostForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      dispatch(createPost({ user: user._id, content, image: img }));
+    dispatch(createPost({ user: user._id, content, image: img }));
   };
 
   return (
@@ -95,6 +97,7 @@ export default function PostForm() {
           </IconButton>
         </label>
       </Box>
+      {img && <img src={URL.createObjectURL(img)} alt="" style={{width:"350px", maxHeight:"500px", borderRadius:"5px"}}/>}
       <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
         <Button
           color="primary"

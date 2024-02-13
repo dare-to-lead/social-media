@@ -2,13 +2,16 @@ import React from "react";
 import { Card, Container, Stack, Typography, Avatar } from "@mui/material";
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
+import useDate from "../../hooks/useDate";
 
 
 const ProfileCard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const userData = JSON.parse(localStorage.getItem("userData"));
-  console.log(userData.firstName)
+  const dob = useDate(userData.dateOfBirth);
+  const joinDate = useDate(useDate.createdAt);
+  // console.log(userData.firstName)
   return (
     <Stack spacing={2}>
       <Card sx={{ px: 0, py: 3 }} backgroundColor={colors.blueAccent[500]}>
@@ -88,10 +91,10 @@ const ProfileCard = () => {
           </Typography>
           <Typography>
             <span style={{ fontWeight: "bold" }}>Date of Birth:</span>
-            {userData.profession}
+            {dob}
           </Typography>
           <Typography>
-            <span style={{ fontWeight: "bold" }}>Joined On:</span> {userData.createdAt}
+            <span style={{ fontWeight: "bold" }}>Joined On:</span> {joinDate}
           </Typography>
         </Container>
       </Card>
