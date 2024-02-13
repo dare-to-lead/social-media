@@ -6,8 +6,8 @@ dotenv.config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
-  console.log(req.body)
+  const { username, email, password, firstName, lastName } = req.body;
+  console.log(req.body);
 
   let existingUser;
   try {
@@ -16,7 +16,13 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: "User already exist" });
     }
     const hashedPassword = bcrypt.hashSync(password);
-    const user = new User({ username, email,firstName, lastName, password: hashedPassword });
+    const user = new User({
+      username,
+      email,
+      firstName,
+      lastName,
+      password: hashedPassword,
+    });
     await user.save();
     res.status(201).json(user);
   } catch (error) {
@@ -25,7 +31,7 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log("Hi")
+  console.log("Hi");
   const { email, password } = req.body;
 
   let existingUser;
@@ -83,7 +89,6 @@ const verifyToken = (req, res, next) => {
   });
   next();
 };
-
 
 // const refreshToken = (req, res, next) => {
 //   const cookies = req.headers.cookie;

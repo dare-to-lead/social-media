@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -18,7 +19,15 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<UserProfile />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <UserProfile />
+                </ProtectedRoute>
+              }
+            />
+            {/* <Route path="/profile" element={<UserProfile />} /> */}
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

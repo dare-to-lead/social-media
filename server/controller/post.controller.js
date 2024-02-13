@@ -3,22 +3,20 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('user').sort({createdAt:-1});
+    const posts = await Post.find().populate("User").sort({ createdAt: -1 });
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const getPost = async(req, res)=>{
+const getPost = async (req, res) => {
   try {
-    const {postId} = req.params;
+    const { postId } = req.params;
     const post = await Post.findById(postId);
     res.json(post);
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
 
 const createPost = async (req, res) => {
   try {
@@ -26,22 +24,20 @@ const createPost = async (req, res) => {
     const cloudinaryResponse = await uploadOnCloudinary(path);
     // console.log(cloudinaryResponse)
     const newPost = new Post({
-      user:req.body.user,
+      user: req.body.user,
       image: cloudinaryResponse.secure_url,
-      content:req.body.content,
+      content: req.body.content,
     });
 
     await newPost.save();
     res.status(201).json(newPost);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
 
-const editPost = async (req, res) => {
-
-};
+const editPost = async (req, res) => {};
 
 const deletePost = async (req, res) => {
   try {

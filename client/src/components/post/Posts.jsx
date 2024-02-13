@@ -8,7 +8,7 @@ const Posts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Paper backgroundColor={colors.grey[800]}>
+    <Paper sx={{ bgcolor: colors.grey[800] }}>
       <Grid container spacing={0} direction="column">
         <Grid item xs={4} sx={{ width: "100%", position: "relative" }}>
           <StoryList />
@@ -18,8 +18,8 @@ const Posts = () => {
             sx={{
               height: "calc(100vh - 102px)",
               overflowY: "scroll",
-            }}
-            backgroundColor={colors.grey[800]}>
+              bgcolor: colors.grey[800],
+            }}>
             <PostList />
           </Box>
         </Grid>
