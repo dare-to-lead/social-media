@@ -8,7 +8,7 @@ const StoryList = () => {
   return (
     <Paper elevation={0}>
       <Box
-        backgroundColor={colors.grey[900]}
+        backgroundcolor={colors.grey[900]}
         sx={{
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         }}>

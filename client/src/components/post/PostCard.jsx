@@ -18,6 +18,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import axios from "axios";
 import { tokens } from "../../theme";
 import FollowToggle from "./FollowToggle";
+import CommentSection from "../comment/CommentSection";
 
 const PostCard = ({ postData }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -28,14 +29,16 @@ const PostCard = ({ postData }) => {
   const [loading, setLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [showComment, setShowComment] = useState(false);
   const userId = userData._id;
   const followingId = post.user._id;
 
-
-  const getPost = async()=>{
-    const {data} = await axios.get(`http://localhost:8080/api/post/${post._id}`);
-    setPost(data)
-  }
+  const getPost = async () => {
+    const { data } = await axios.get(
+      `http://localhost:8080/api/post/${post._id}`
+    );
+    setPost(data);
+  };
 
   const checkFollowing = async () => {
     try {
@@ -97,13 +100,15 @@ const PostCard = ({ postData }) => {
         { userId }
       );
       // console.log(data);
-      getPost()
-      checkFollowing()
+      checkFollowing();
     } catch (error) {
       console.log("failed to follow/unfollow");
     }
   };
 
+  const handleComment = () => {
+    setShowComment(!showComment);
+  };
 
   useEffect(() => {
     checkLiked();
@@ -111,91 +116,102 @@ const PostCard = ({ postData }) => {
   }, []);
 
   return (
-    <Card sx={{ width: "60%", minWidth: "350px" }}>
-      <CardContent
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Avatar
-          sx={{ height: "60px", width: "60px" }}
-          src={post.user.profilePicture}
-        />
-        <Container>
-          <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-            {post.user.firstName} {post.user.lastName}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "gray" }}>
-            {post.user.followers.length}{" "}
-            {post.user.followers.length === 1 ? "follower" : "followers"}
-          </Typography>
-        </Container>
-        {post.user._id !== userId && (
-          <FollowToggle
-            isFollowing={isFollowing}
-            handleFollow={handleFollow}
+    <>
+      <Card sx={{ width: "60%", minWidth: "350px" }}>
+        <CardContent
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Avatar
+            sx={{ height: "60px", width: "60px" }}
+            src={post.user.profilePicture}
           />
-        )}
-      </CardContent>
-      <CardContent>
-        <Typography variant="body1" mb={1} mt={-2}>
-          {post.content}
-        </Typography>
-        <CardMedia
-          component="img"
-          height="50%"
-          sx={{ objectFit: "cover", borderRadius: 2 }}
-          image={post.image}
-          alt="Post Image"
-        />
-      </CardContent>
-      <CardContent
-        sx={{ mt: -2, display: "flex", alignItems: "center", gap: 1 }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <IconButton aria-label="like" onClick={handleLike} disabled={loading}>
-            {loading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              <FavoriteIcon sx={{ color: liked ? "#ff4081" : "grey" }} />
-            )}
-          </IconButton>
-          <Typography variant="body2" sx={{ color: "gray" }}>
-            {likeCount} {likeCount === 1 ? "like" : "likes"}
+          <Container>
+            <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+              {post.user.firstName} {post.user.lastName}
+            </Typography>
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              {post?.user?.followers?.length}{" "}
+              {post?.user?.followers?.length === 1 ? "follower" : "followers"}
+            </Typography>
+          </Container>
+          {post.user._id !== userId && (
+            <FollowToggle
+              isFollowing={isFollowing}
+              handleFollow={handleFollow}
+            />
+          )}
+        </CardContent>
+        <CardContent>
+          <Typography variant="body1" mb={1} mt={-2}>
+            {post.content}
           </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          <CardMedia
+            component="img"
+            height="50%"
+            sx={{ objectFit: "cover", borderRadius: 2 }}
+            image={post.image}
+            alt="Post Image"
+          />
+        </CardContent>
+        <CardContent
+          sx={{ mt: -2, display: "flex", alignItems: "center", gap: 1 }}
         >
-          <IconButton aria-label="comment" sx={{ color: colors.blueAccent[500] }}>
-            <CommentOutlinedIcon />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <IconButton
+              aria-label="like"
+              onClick={handleLike}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                <FavoriteIcon sx={{ color: liked ? "#ff4081" : "grey" }} />
+              )}
+            </IconButton>
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              {likeCount} {likeCount === 1 ? "like" : "likes"}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <IconButton
+              aria-label="comment"
+              sx={{ color: colors.blueAccent[500] }}
+              onClick={handleComment}
+            >
+              <CommentOutlinedIcon />
+            </IconButton>
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              {post.comments.length}{" "}
+              {post.comments.length === 1 ? "comment" : "comments"}
+            </Typography>
+          </Box>
+          <IconButton
+            color="primary"
+            aria-label="save"
+            sx={{ marginLeft: "auto", color: colors.blueAccent[500] }}
+          >
+            <BookmarkBorderIcon />
           </IconButton>
-          <Typography variant="body2" sx={{ color: "gray" }}>
-            {post.comments.length}{" "}
-            {post.comments.length === 1 ? "comment" : "comments"}
-          </Typography>
-        </Box>
-        <IconButton
-          color="primary"
-          aria-label="save"
-          sx={{ marginLeft: "auto", color: colors.blueAccent[500] }}
-        >
-          <BookmarkBorderIcon />
-        </IconButton>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      <CommentSection open={showComment} setOpen={setShowComment} postId={postData._id}/>
+    </>
   );
 };
 

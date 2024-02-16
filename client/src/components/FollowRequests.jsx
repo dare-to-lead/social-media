@@ -30,7 +30,7 @@ const FollowRequests = () => {
     <Container sx={{ maxHeight: "calc(100vh - 520px)", overflowY: "scroll" }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {[1, 2, 3, 4, 5, 5, 3, 3, 3, 3, 6].map((f, i) => (
-          <StyledCard>
+          <StyledCard key={i}>
             <CardContent
               sx={{
                 display: "flex",

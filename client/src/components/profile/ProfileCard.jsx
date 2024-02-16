@@ -14,7 +14,7 @@ const ProfileCard = () => {
   // console.log(userData.firstName)
   return (
     <Stack spacing={2}>
-      <Card sx={{ px: 0, py: 3 }} backgroundColor={colors.blueAccent[500]}>
+      <Card sx={{ px: 0, py: 3 }} backgroundcolor={colors.blueAccent[500]}>
         <Container sx={{ position: "relative", width: "100%" }}>
           <img
             src="https://images.hdqwalls.com/wallpapers/bthumb/samsung-galaxy-s9-zk.jpg"

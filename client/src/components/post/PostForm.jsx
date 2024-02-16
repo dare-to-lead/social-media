@@ -13,8 +13,12 @@ import {
   Button,
 } from "@mui/material";
 import { createPost } from "../../redux/slices/postSlice";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 export default function PostForm() {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const user =
     useSelector((state) => state.user.user) ||
     JSON.parse(localStorage.getItem("userData"));
@@ -41,7 +45,7 @@ export default function PostForm() {
   return (
     <Box
       sx={{
-        bgcolor: "white",
+        bgcolor: colors.grey[900],
         minWidth: 350,
         padding: 2,
         borderRadius: 4,
@@ -58,12 +62,30 @@ export default function PostForm() {
           <Box sx={{ display: "flex" }}>
             <FormControlLabel
               value="story"
-              control={<Radio color="primary" />}
+              control={
+                <Radio
+                  sx={{
+                    color: colors.blueAccent[500], // Default color for unchecked state
+                    "&.Mui-checked": {
+                      color: colors.blueAccent[500], // Color for checked state
+                    },
+                  }}
+                />
+              }
               label="Story"
             />
             <FormControlLabel
               value="post"
-              control={<Radio color="primary" />}
+              control={
+                <Radio
+                  sx={{
+                    color: colors.blueAccent[500], // Default color for unchecked state
+                    "&.Mui-checked": {
+                      color: colors.blueAccent[500], // Color for checked state
+                    },
+                  }}
+                />
+              }
               label="Post"
             />
           </Box>
@@ -77,6 +99,14 @@ export default function PostForm() {
           variant="outlined"
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          sx={{
+            color: colors.grey[900],
+            outlineColor:colors.grey[900],
+            borderColor:colors.grey[900],
+            "::placeholder":{
+              color:colors.grey[900]
+            }
+          }}
         />
       </FormControl>
       <Box>
@@ -89,21 +119,25 @@ export default function PostForm() {
             style={{ display: "none" }}
           />
           <IconButton
-            color="primary"
             component="span"
-            sx={{ marginTop: 2, fontSize: "70px" }}
+            sx={{ marginTop: 2, fontSize: "70px", color:colors.blueAccent[500] }}
           >
             <ImageIcon sx={{ fontSize: "30px" }} />
           </IconButton>
         </label>
       </Box>
-      {img && <img src={URL.createObjectURL(img)} alt="" style={{width:"350px", maxHeight:"500px", borderRadius:"5px"}}/>}
+      {img && (
+        <img
+          src={URL.createObjectURL(img)}
+          alt=""
+          style={{ width: "350px", maxHeight: "500px", borderRadius: "5px" }}
+        />
+      )}
       <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
         <Button
-          color="primary"
           component="span"
           variant="contained"
-          sx={{ marginTop: 2 }}
+          sx={{ marginTop: 2,color:colors.blueAccent[500] }}
           onClick={handleSubmit}
           disabled={!content.trim() || !img}
         >

@@ -7,12 +7,16 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import PostForm from "./PostForm";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function CreatePost({ open, setOpen }) {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const handleClose = () => {
     setOpen(false);
   };
@@ -26,7 +30,7 @@ export default function CreatePost({ open, setOpen }) {
         TransitionComponent={Transition}
         PaperProps={{
           sx: {
-            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            bgcolor: colors.grey[900],
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           },
         }}
