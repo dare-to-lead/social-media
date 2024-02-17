@@ -7,6 +7,7 @@ import UserProfile from "./pages/UserProfile";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserTable from "./components/dashboard/UserTable";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -27,7 +28,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {/* <Route path="/profile" element={<UserProfile />} /> */}
+            <Route path="/allUsers" element={<UserTable />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
