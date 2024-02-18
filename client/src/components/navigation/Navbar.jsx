@@ -69,7 +69,7 @@ const Navbar = () => {
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{bgcolor:colors.grey[900]}}>
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
           <Avatar

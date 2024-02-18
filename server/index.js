@@ -8,6 +8,7 @@ import postRouter from "./routes/post.routes.js";
 import userRouter from "./routes/user.routes.js";
 import likeRouter from "./routes/like.routes.js";
 import followRouter from "./routes/follow.routes.js";
+import commentRouter from "./routes/comment.routes.js";
 dotenv.config();
 
 const MONGO_URL = process.env.MONGO_URL;
@@ -24,6 +25,7 @@ app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/like", likeRouter);
 app.use("/api/follow", followRouter);
+app.use("/api/comment", commentRouter);
 
 app.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);

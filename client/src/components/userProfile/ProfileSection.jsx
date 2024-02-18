@@ -17,67 +17,55 @@ import ProfilePosts from "./ProfilePosts";
 import ProfileForm from "./ProfileForm";
 import { editUser } from "../../redux/slices/userSlice";
 import useDate from "../../hooks/useDate";
+import axios from "axios";
+import AvatarDialog from "./AvatarDialog";
+import CoverDialog from "./CoverDialog";
 
 const ProfileSection = () => {
-  const user = useSelector((state) => state.user.user) || JSON.parse(localStorage.getItem("userData"));
+  const user =
+    useSelector((state) => state.user.user) ||
+    JSON.parse(localStorage.getItem("userData"));
   const [open, setOpen] = React.useState(false);
+  const [avatarDialog, setAvatarDialog]= useState(false);
+  const [coverDialog, setCoverDialog] = useState(false)
   const dob = useDate(user?.dateOfBirth);
   const joinDate = useDate(user?.createdAt);
-  const inputFileRef = useRef(null); // Ref for file input element
-  const [selectedImage, setSelectedImage] = useState(null);
-  console.log(user)
+  const avatar = user?.profilePicture ||
+  "https://randomuser.me/api/portraits/lego/1.jpg";
+  const cover = user?.coverPicture || "https://images.hdqwalls.com/wallpapers/bthumb/samsung-galaxy-s9-zk.jpg"
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleEditAvatar = () => {
-    // Trigger file input click
-    inputFileRef.current.click();
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedImage(file);
-  };
   return (
     <Paper sx={{ height: "100vh" }}>
       <Box sx={{ position: "relative", width: "100%" }}>
         <img
-          src="https://images.hdqwalls.com/wallpapers/bthumb/samsung-galaxy-s9-zk.jpg"
+          src={cover}
           alt=""
           style={{
             width: "100%",
             height: "150px",
             objectFit: "cover",
           }}
+          onClick={()=>setCoverDialog(true)}
         />
         <Avatar
-          src={selectedImage ? URL.createObjectURL(file) : (user?.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg")}
+          src={avatar}
           alt=""
           sx={{
             position: "absolute",
-            bottom: "-60px",
+            bottom: "-45px",
             left: "50%",
             transform: "translateX(-50%)",
-            width: "120px",
-            height: "120px",
+            width: "100px",
+            height: "100px",
             border: "3px solid #fff",
             backgroundColor: "#fff",
-            cursor: "pointer", // Add cursor pointer for avatar
+            cursor: "pointer",
           }}
-          onClick={handleEditAvatar} // Call function to open file picker on avatar click
-        />
-        <input
-          type="file"
-          ref={inputFileRef} // Attach ref to input element
-          style={{ display: "none" }} // Hide the input element
-          accept="image/*" // Allow only image files
-          onChange={handleImageChange} // Handle file selection
+          onClick={()=>setAvatarDialog(true)}
         />
         <IconButton
           sx={{
@@ -173,6 +161,8 @@ const ProfileSection = () => {
         <ProfilePosts />
       </Box>
       <ProfileForm open={open} setOpen={setOpen} />
+      <AvatarDialog open={avatarDialog} setOpen={setAvatarDialog} avatar={avatar} id={user._id}/>
+      <CoverDialog open={coverDialog} setOpen={setCoverDialog} cover={cover} id={user._id}/>
     </Paper>
   );
 };

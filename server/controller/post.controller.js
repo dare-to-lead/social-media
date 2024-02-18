@@ -2,6 +2,7 @@ import Post from "../model/post.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const getAllPosts = async (req, res) => {
+  console.log("get all posts");
   try {
     const posts = await Post.find().populate("user").sort({ createdAt: -1 });
     res.json(posts);
@@ -55,4 +56,14 @@ const deletePost = async (req, res) => {
   }
 };
 
-export { getPost, getAllPosts, createPost, editPost, deletePost };
+const getUserPosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const userPosts = await Post.find({ user: userId });
+    res.status(200).json(userPosts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { getPost, getAllPosts, createPost, editPost, deletePost, getUserPosts };

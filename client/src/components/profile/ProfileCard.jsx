@@ -2,40 +2,42 @@ import React from "react";
 import { Card, Container, Stack, Typography, Avatar } from "@mui/material";
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
+import {useSelector} from "react-redux";
 import useDate from "../../hooks/useDate";
 
 const ProfileCard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = useSelector((state) => state.user.user) ||
+  JSON.parse(localStorage.getItem("userData"));
   const dob = useDate(userData.dateOfBirth);
   const joinDate = useDate(useDate.createdAt);
   // console.log(userData.firstName)
   return (
     <Stack spacing={2}>
-      <Card sx={{ px: 0, py: 3, bgcolor: colors.blueAccent[500] }}>
+      <Card sx={{ px: 0, py: 3 }} backgroundcolor={colors.blueAccent[500]}>
         <Container sx={{ position: "relative", width: "100%" }}>
           <img
-            src="https://images.hdqwalls.com/wallpapers/bthumb/samsung-galaxy-s9-zk.jpg"
+            src={userData.coverPicture}
             alt=""
             style={{
               width: "100%",
-              height: "150px",
+              height: "100px",
               objectFit: "cover",
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
             }}
           />
           <Avatar
-            src="https://images.hdqwalls.com/download/girl-scifi-mask-4k-t0-3840x2400.jpg"
+            src={userData?.profilePicture}
             alt=""
             sx={{
               position: "absolute",
               bottom: "-40px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "90px",
-              height: "90px",
+              width: "80px",
+              height: "80px",
               border: "3px solid #fff",
               backgroundColor: "#fff",
             }}

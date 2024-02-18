@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Box, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
 const ProfilePosts = () => {
+  const user =
+    useSelector((state) => state.user.user) ||
+    JSON.parse(localStorage.getItem("userData"));
+  const [posts, setPosts] = useState([]);
+
+  const getUserPosts = async (req, res) => {
+    const userId = user._id;
+    const { data } = await axios.get(
+      `http://localhost:8080/api/post/user/${userId}`
+    );
+    setPosts(data);
+  };
+
+  useEffect(() => {
+    getUserPosts();
+  });
   return (
     <div
       style={{
@@ -11,13 +31,27 @@ const ProfilePosts = () => {
         flexWrap: "wrap",
       }}
     >
-      {[1, 2, 3, 4, 3, 23, 33, 3, 33, 3, 3, 33, 3, 33].map((p,i) => (
-        <img
-        key={i}
-          style={{ width: "200px", maxHeight: "300px", borderRadius: "3px" }}
-          src="https://plus.unsplash.com/premium_photo-1665657351435-96c58da04fd1?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-        />
+      {posts.map((p, i) => (
+        <Box key={i} sx={{ position: "relative" }}>
+          <IconButton
+          color="secondary"
+            sx={{
+              position: "absolute"
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+          <img
+            style={{
+              width: "200px",
+              height: "200px",
+              borderRadius: "3px",
+              objectFit: "cover",
+            }}
+            src={p.image}
+            alt=""
+          />
+        </Box>
       ))}
     </div>
   );
