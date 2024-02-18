@@ -62,7 +62,7 @@ export default function CommentSection({ setOpen, open, postId }) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <Box sx={{ minWidth: "400px" }}>
+        <Box sx={{ minWidth: "350px" }}>
           <DialogTitle id="scroll-dialog-title">Comments</DialogTitle>
           <DialogContent dividers={scroll === "paper"}>
             {comments.length === 0 ? (
@@ -73,7 +73,11 @@ export default function CommentSection({ setOpen, open, postId }) {
               >
                 No Comment added
               </DialogContentText>
-            ) :(comments.map(comment=><Comments commentId={comment} key={comment}/>))}
+            ) : (
+              comments.map((comment) => (
+                <Comments commentId={comment} key={comment} />
+              ))
+            )}
           </DialogContent>
           <DialogActions>
             <TextField fullWidth onChange={(e) => setContent(e.target.value)} />

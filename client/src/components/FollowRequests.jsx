@@ -27,7 +27,7 @@ const FollowRequests = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Container sx={{ maxHeight: "calc(100vh - 520px)", overflowY: "scroll" }}>
+    <Container sx={{ maxHeight: "calc(100vh - 450px)", overflowY: "scroll" }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {[1, 2, 3, 4, 5, 5, 3, 3, 3, 3, 6].map((f, i) => (
           <StyledCard key={i}>
@@ -36,8 +36,6 @@ const FollowRequests = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: 2,
-                maxHeight: "30px",
                 bgcolor:colors.grey[800]
               }}
             >
