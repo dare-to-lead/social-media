@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Box, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import axios from "axios";
+import UserPost from "./UserPost";
 
 const ProfilePosts = () => {
   const user =
     useSelector((state) => state.user.user) ||
     JSON.parse(localStorage.getItem("userData"));
   const [posts, setPosts] = useState([]);
+  const [reload, setReload] = useState(false)
 
   const getUserPosts = async (req, res) => {
     const userId = user._id;
@@ -18,9 +19,11 @@ const ProfilePosts = () => {
     setPosts(data);
   };
 
+
+
   useEffect(() => {
     getUserPosts();
-  });
+  },[reload]);
   return (
     <div
       style={{
@@ -31,27 +34,8 @@ const ProfilePosts = () => {
         flexWrap: "wrap",
       }}
     >
-      {posts.map((p, i) => (
-        <Box key={i} sx={{ position: "relative" }}>
-          <IconButton
-          color="secondary"
-            sx={{
-              position: "absolute"
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-          <img
-            style={{
-              width: "200px",
-              height: "200px",
-              borderRadius: "3px",
-              objectFit: "cover",
-            }}
-            src={p.image}
-            alt=""
-          />
-        </Box>
+      {posts.map((p) => (
+        <UserPost p={p} key={p._id} setReload={setReload}/>
       ))}
     </div>
   );
