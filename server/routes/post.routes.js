@@ -7,7 +7,7 @@ postRouter.get("/", getAllPosts);
 postRouter.get("/:postId", getPost)
 postRouter.post("/", upload.single("image"), createPost);
 postRouter.put("/:id", editPost);
-postRouter.delete("/:id", deletePost);
+postRouter.delete("/:postId", deletePost);
 postRouter.get("/user/:userId", getUserPosts)
 
 

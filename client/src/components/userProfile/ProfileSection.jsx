@@ -20,8 +20,12 @@ import useDate from "../../hooks/useDate";
 import axios from "axios";
 import AvatarDialog from "./AvatarDialog";
 import CoverDialog from "./CoverDialog";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 const ProfileSection = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const user =
     useSelector((state) => state.user.user) ||
     JSON.parse(localStorage.getItem("userData"));
@@ -142,18 +146,18 @@ const ProfileSection = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          bgcolor: "#f4f4fd",
+          bgcolor: colors.grey[800],
         }}
       >
         <Container sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <IconButton>
-            <ImageIcon sx={{ height: "2rem", width: "2rem" }} color="primary" />
+            <ImageIcon sx={{ height: "1.5rem", width: "1.5rem", color:colors.blueAccent[500] }}  />
           </IconButton>
         </Container>
 
         <Container sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <IconButton>
-            <VideocamIcon sx={{ height: "2rem", width: "2rem" }} />
+            <VideocamIcon sx={{ height: "1.5rem", width: "1.5rem" }}/>
           </IconButton>
         </Container>
       </Box>

@@ -34,6 +34,7 @@ const App = () => {
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
+
 };
 
 export default App;

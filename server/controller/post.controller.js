@@ -42,17 +42,17 @@ const editPost = async (req, res) => {};
 
 const deletePost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
 
-    const deletedPost = await Post.findByIdAndDelete(id);
+    const deletedPost = await Post.findByIdAndDelete(postId);
 
     if (!deletedPost) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ message: "Post not found", status:"failed" });
     }
 
-    res.json({ message: "Post deleted successfully" });
+    res.json({ message: "Post deleted successfully", status:"success" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message, status:"failed" });
   }
 };
 
