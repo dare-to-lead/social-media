@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   status: "idle",
   token: null,
+  users: null,
 };
 
 export const login = createAsyncThunk("user/login", async (userdata) => {
@@ -23,6 +24,11 @@ export const editUser = createAsyncThunk("user/editUser", async (userData) => {
     `http://localhost:8080/api/user/${userData.id}`,
     userData
   );
+  return data;
+});
+export const getAllusers = createAsyncThunk("user/getAllUsers", async () => {
+  const { data } = await axios.get(`http://localhost:8080/api/user/allUsers`);
+  console.log("allusers", data);
   return data;
 });
 
@@ -48,6 +54,17 @@ const userSlice = createSlice({
       })
       .addCase(editUser.fulfilled, (state) => {
         console.log("User is edited");
+      })
+      .addCase(getAllusers.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllusers.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.users = action.payload;
+        console.log("all users", action.payload);
+      })
+      .addCase(getAllusers.rejected, (state) => {
+        state.status = "idle";
       });
   },
 });

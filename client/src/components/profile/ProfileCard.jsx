@@ -5,7 +5,6 @@ import { useTheme } from "@emotion/react";
 import {useSelector} from "react-redux";
 import useDate from "../../hooks/useDate";
 
-
 const ProfileCard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -47,24 +46,21 @@ const ProfileCard = () => {
         <Typography
           align="center"
           variant="h5"
-          sx={{ fontWeight: "bold", color: colors.blueAccent[500], mt: 6 }}
-        >
+          sx={{ fontWeight: "bold", color: colors.blueAccent[500], mt: 6 }}>
           {userData.firstName} {userData.lastName}
         </Typography>
         <Typography align="center" sx={{ color: "gray", fontSize: "14px" }}>
           {userData.username}
         </Typography>
         <Container
-          sx={{ display: "flex", justifyContent: "space-around", mt: 1 }}
-        >
+          sx={{ display: "flex", justifyContent: "space-around", mt: 1 }}>
           <div>
             <Typography
               sx={{
                 fontWeight: "bold",
                 fontSize: "20px",
                 textAlign: "center",
-              }}
-            >
+              }}>
               {userData.followers.length}
             </Typography>
             <Typography sx={{ color: "gray", textAlign: "center" }}>
@@ -77,8 +73,7 @@ const ProfileCard = () => {
                 fontWeight: "bold",
                 fontSize: "20px",
                 textAlign: "center",
-              }}
-            >
+              }}>
               {userData.following.length}
             </Typography>
             <Typography sx={{ color: "gray", textAlign: "center" }}>
@@ -89,7 +84,8 @@ const ProfileCard = () => {
         <hr style={{ color: "gray" }} />
         <Container sx={{ mt: 2 }}>
           <Typography>
-            <span style={{ fontWeight: "bold" }}>Profession:</span> {userData.profession}
+            <span style={{ fontWeight: "bold" }}>Profession:</span>{" "}
+            {userData.profession}
           </Typography>
           <Typography>
             <span style={{ fontWeight: "bold" }}>Date of Birth:</span>
