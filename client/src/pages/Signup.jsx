@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -52,19 +50,25 @@ export default function SignUp() {
     }));
   };
 
-  const sendRequest = async () => {
-    const response = await axios
-      .post("http://localhost:8080/api/auth/signup", {
-        firstName: inputs.firstname,
-        lastName: inputs.lastname,
-        username: inputs.username,
-        email: inputs.email,
-        password: inputs.password,
-        cPassword: inputs.confirmPassword,
-      })
-    const data = await response.data;
-    // console.log(data)
+  const onFileChange = (e) => {
+    setInputs({
+      ...inputs,
+      profilePictureUrl: URL.createObjectURL(e.target.files[0]),
+    });
+  };
 
+  const sendRequest = async () => {
+    const response = await axios.post("http://localhost:8080/api/auth/signup", {
+      firstName: inputs.firstname,
+      lastName: inputs.lastname,
+      username: inputs.username,
+      email: inputs.email,
+      password: inputs.password,
+      cPassword: inputs.confirmPassword,
+      profilePicture: inputs.profilePictureUrl,
+    });
+    const data = await response.data;
+    console.log(data);
   };
   const handleSubmit = (e) => {
     e.preventDefault();

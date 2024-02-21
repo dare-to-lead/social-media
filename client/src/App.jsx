@@ -28,13 +28,12 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/allUsers" element={<UserTable />} />
+            <Route path="/dashboard" element={<UserTable />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
-
 };
 
 export default App;

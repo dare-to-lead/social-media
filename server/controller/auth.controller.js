@@ -8,13 +8,15 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const signup = async (req, res) => {
   const { username, email, password, firstName, lastName } = req.body;
 
-  let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
+    let existingUser = await User.findOne({ email: email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exist" });
+      return res.status(400).json({ message: "User already exists" });
     }
+
     const hashedPassword = bcrypt.hashSync(password);
+
+    // Create new user instance with profile picture URL
     const user = new User({
       username,
       email,
@@ -22,10 +24,13 @@ const signup = async (req, res) => {
       lastName,
       password: hashedPassword,
     });
+
     await user.save();
-    res.status(201).json(user);
+
+    return res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 

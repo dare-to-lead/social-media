@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema(
     profession: {
       type: String,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     token: [{ type: String }],
