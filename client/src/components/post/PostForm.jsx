@@ -11,10 +11,13 @@ import {
   TextField,
   IconButton,
   Button,
+  CircularProgress,
 } from "@mui/material";
-import { createPost } from "../../redux/slices/postSlice";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
+import Notification from "../errors/Notification";
+import axios from "axios";
+
 
 export default function PostForm() {
   const theme = useTheme();
@@ -26,8 +29,9 @@ export default function PostForm() {
   const [type, setType] = useState("post");
   const [img, setImg] = useState(null);
   const [content, setContent] = useState("");
-  //image
-
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [snackData, setSnackData] = useState({});
   const handleChange = (event) => {
     setType(event.target.value);
   };
@@ -37,9 +41,35 @@ export default function PostForm() {
     setImg(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createPost({ user: user._id, content, image: img }));
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("image", img);
+    formData.append("content", content);
+    formData.append("user", user._id);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/post",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status === 201) {
+        setLoading(false);
+        setSnackData({ success: true, message: "Post created Successfully" });
+        setOpen(true);
+        setImg(null);
+        setContent("");
+      }
+    } catch (error) {
+      setLoading(false);
+      setSnackData({ success: false, message: "Something went wrong" });
+      setOpen(true);
+    }
   };
 
   return (
@@ -48,7 +78,7 @@ export default function PostForm() {
         bgcolor: colors.grey[900],
         minWidth: 350,
         padding: 2,
-        borderRadius: 4,
+        borderRadius: 1,
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
@@ -65,9 +95,9 @@ export default function PostForm() {
               control={
                 <Radio
                   sx={{
-                    color: colors.blueAccent[500], // Default color for unchecked state
+                    color: colors.blueAccent[500],
                     "&.Mui-checked": {
-                      color: colors.blueAccent[500], // Color for checked state
+                      color: colors.blueAccent[500],
                     },
                   }}
                 />
@@ -79,9 +109,9 @@ export default function PostForm() {
               control={
                 <Radio
                   sx={{
-                    color: colors.blueAccent[500], // Default color for unchecked state
+                    color: colors.blueAccent[500],
                     "&.Mui-checked": {
-                      color: colors.blueAccent[500], // Color for checked state
+                      color: colors.blueAccent[500],
                     },
                   }}
                 />
@@ -101,11 +131,11 @@ export default function PostForm() {
           onChange={(e) => setContent(e.target.value)}
           sx={{
             color: colors.grey[900],
-            outlineColor:colors.grey[900],
-            borderColor:colors.grey[900],
-            "::placeholder":{
-              color:colors.grey[900]
-            }
+            outlineColor: colors.grey[900],
+            borderColor: colors.grey[900],
+            "::placeholder": {
+              color: colors.grey[900],
+            },
           }}
         />
       </FormControl>
@@ -120,7 +150,11 @@ export default function PostForm() {
           />
           <IconButton
             component="span"
-            sx={{ marginTop: 2, fontSize: "70px", color:colors.blueAccent[500] }}
+            sx={{
+              marginTop: 2,
+              fontSize: "70px",
+              color: colors.blueAccent[500],
+            }}
           >
             <ImageIcon sx={{ fontSize: "30px" }} />
           </IconButton>
@@ -137,13 +171,14 @@ export default function PostForm() {
         <Button
           component="span"
           variant="contained"
-          sx={{ marginTop: 2,color:colors.blueAccent[500] }}
+          sx={{ marginTop: 2, color: colors.blueAccent[500] }}
           onClick={handleSubmit}
-          disabled={!content.trim() || !img}
+          disabled={!content.trim() || !img || loading}
         >
-          <UploadIcon />
+          {loading ? <CircularProgress /> : <UploadIcon />}
         </Button>
       </Box>
+      <Notification open={open} setOpen={setOpen} snackData={snackData} />
     </Box>
   );
 }

@@ -17,7 +17,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SearchIcon from "@mui/icons-material/Search";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 
 const Navbar = () => {
   const theme = useTheme();
@@ -31,13 +31,13 @@ const Navbar = () => {
   return (
     <AppBar position="static" sx={{ bgcolor: colors.grey[900] }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-      <IconButton onClick={()=>navigate("/")}>
+        <IconButton onClick={() => navigate("/")}>
           <HomeIcon />
         </IconButton>
         <IconButton>
           <SearchIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={()=>navigate("/dashboard")}>
           <DashboardIcon />
         </IconButton>
         <IconButton onClick={colorMode.toggleColorMode}>

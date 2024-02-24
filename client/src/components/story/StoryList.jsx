@@ -11,8 +11,21 @@ const StoryList = () => {
         backgroundcolor={colors.grey[900]}
         sx={{
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        }}>
-        <Stack direction="row" spacing={2} p={1} overflow="scroll">
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={2}
+          p={1}
+          overflow="scroll"
+          sx={{
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+          }}
+        >
           <PostButton />
           {[1, 2, 3, 4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8].map((s, i) => (
             <IconButton key={i}>

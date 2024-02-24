@@ -2,23 +2,29 @@ import React from "react";
 import { Card, Container, Stack, Typography, Avatar } from "@mui/material";
 import { tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import useDate from "../../hooks/useDate";
+import { useNavigate } from "react-router-dom";
+import dummyProfile from "../../assets/profile.png"
 
 const ProfileCard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const userData = useSelector((state) => state.user.user) ||
-  JSON.parse(localStorage.getItem("userData"));
+  const navigate = useNavigate();
+  const userData =
+    useSelector((state) => state.user.user) ||
+    JSON.parse(localStorage.getItem("userData"));
   const dob = useDate(userData.dateOfBirth);
-  const joinDate = useDate(useDate.createdAt);
-  // console.log(userData.firstName)
+  const joinDate = useDate(userData.createdAt);
   return (
     <Stack spacing={2}>
       <Card sx={{ px: 0, py: 3 }} backgroundcolor={colors.blueAccent[500]}>
         <Container sx={{ position: "relative", width: "100%" }}>
           <img
-            src={userData.coverPicture}
+            src={
+              userData.coverPicture ||
+              "https://trusteid.mioa.gov.mk/wp-content/plugins/uix-page-builder/uixpb_templates/images/UixPageBuilderTmpl/default-cover-2.jpg"
+            }
             alt=""
             style={{
               width: "100%",
@@ -29,7 +35,7 @@ const ProfileCard = () => {
             }}
           />
           <Avatar
-            src={userData?.profilePicture}
+            src={userData?.profilePicture || dummyProfile}
             alt=""
             sx={{
               position: "absolute",
@@ -46,21 +52,44 @@ const ProfileCard = () => {
         <Typography
           align="center"
           variant="h5"
-          sx={{ fontWeight: "bold", color: colors.blueAccent[500], mt: 6 }}>
+          sx={{
+            fontWeight: "bold",
+            color: colors.blueAccent[500],
+            mt: 6,
+            ":hover": {
+              textDecoration: "underline",
+              cursor: "pointer",
+            },
+          }}
+          onClick={() => navigate("/profile")}
+        >
           {userData.firstName} {userData.lastName}
         </Typography>
-        <Typography align="center" sx={{ color: "gray", fontSize: "14px" }}>
+        <Typography
+          align="center"
+          sx={{
+            color: "gray",
+            fontSize: "14px",
+            ":hover": {
+              textDecoration: "underline",
+              cursor: "pointer",
+            },
+          }}
+          onClick={() => navigate("/profile")}
+        >
           {userData.username}
         </Typography>
         <Container
-          sx={{ display: "flex", justifyContent: "space-around", mt: 1 }}>
+          sx={{ display: "flex", justifyContent: "space-around", mt: 1 }}
+        >
           <div>
             <Typography
               sx={{
                 fontWeight: "bold",
                 fontSize: "20px",
                 textAlign: "center",
-              }}>
+              }}
+            >
               {userData.followers.length}
             </Typography>
             <Typography sx={{ color: "gray", textAlign: "center" }}>
@@ -73,7 +102,8 @@ const ProfileCard = () => {
                 fontWeight: "bold",
                 fontSize: "20px",
                 textAlign: "center",
-              }}>
+              }}
+            >
               {userData.following.length}
             </Typography>
             <Typography sx={{ color: "gray", textAlign: "center" }}>
@@ -85,11 +115,12 @@ const ProfileCard = () => {
         <Container sx={{ mt: 2 }}>
           <Typography>
             <span style={{ fontWeight: "bold" }}>Profession:</span>{" "}
-            {userData.profession}
+            {userData.profession || "N/A"}
           </Typography>
           <Typography>
             <span style={{ fontWeight: "bold" }}>Date of Birth:</span>
-            {dob}
+            {" "}
+             {!userData.dateOfBirth?"N/A":dob}
           </Typography>
           <Typography>
             <span style={{ fontWeight: "bold" }}>Joined On:</span> {joinDate}
