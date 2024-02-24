@@ -36,7 +36,7 @@ export default function CreatePost({ open, setOpen }) {
         }}
       >
         <Box sx={{display:'flex', flexDirection:"row-reverse", m:"20px"}}>
-          <Button autoFocus color="primary" onClick={handleClose}>
+          <Button autoFocus sx={{color:colors.grey[100]}} onClick={handleClose}>
             <CloseIcon />
           </Button>
         </Box>

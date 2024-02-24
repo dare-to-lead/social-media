@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import {
   CssBaseline,
   TextField,
@@ -13,18 +13,14 @@ import {
   ThemeProvider,
   CircularProgress,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/slices/userSlice";
 import Copyright from "../components/CopyRight";
-
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Notification from "../components/errors/Notification";
 
 const defaultTheme = createTheme();
 
-const Login = () => {
-  const dispatch = useDispatch();
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -39,21 +35,29 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        data
+        "http://localhost:8080/api/auth/forgotpassword",
+        {
+          email: data.email,
+        }
       );
       if (response.status === 200) {
-        setSnackData({ success: true, message: "logged in successfully" });
+        setSnackData({
+          success: true,
+          message: "Your new password has been sent to your email",
+        });
         setOpen(true);
-        dispatch(login(response.data));
         setTimeout(() => {
           setLoading(false);
-          navigate("/");
+          navigate("/login");
         }, 1000);
       }
     } catch (error) {
       setLoading(false);
-      setSnackData({ success: false, message: "Enter Valid Email/Password" });
+      setSnackData({
+        success: false,
+        message:
+          "Failed to send the new password to your email. Please try again later.",
+      });
       setOpen(true);
     }
   };
@@ -71,7 +75,7 @@ const Login = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Login
+            Forgot Password
           </Typography>
           <Box
             component="form"
@@ -82,43 +86,24 @@ const Login = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  {...register("email", {
-                    required: "Email is required",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Enter a valid email address",
-                    },
-                  })}
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
+                  name="email"
                   autoComplete="email"
-                />
-                {errors.email && (
-                  <Typography variant="caption" color="error">
-                    {errors.email.message}
-                  </Typography>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("password", {
-                    required: "Password is required",
+                  {...register("email", {
+                    required: true,
+                    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   })}
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
+                  error={!!errors.email}
+                  helperText={
+                    errors.email
+                      ? errors.email.type === "required"
+                        ? "Email is required"
+                        : "Enter a valid email address"
+                      : ""
+                  }
                 />
-                {errors.password && (
-                  <Typography variant="caption" color="error">
-                    {errors.password.message}
-                  </Typography>
-                )}
               </Grid>
             </Grid>
             <Button
@@ -128,9 +113,9 @@ const Login = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={loading}
             >
-              {loading ? <CircularProgress /> : "Login"}
+              {loading ? <CircularProgress /> : "Get Password on email"}
             </Button>
-            <Grid container justifyContent="space-between">
+            <Grid container justifyContent="space-between" gap={10}>
               <Grid item>
                 <Link href="/forgotpassword" variant="body2">
                   Forgot password
@@ -151,4 +136,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
