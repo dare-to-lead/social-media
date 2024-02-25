@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../redux/slices/postSlice";
 import LoadingBar from "../errors/LoadingBar";
 import BottomNavigation from "../navigation/BottomNavigation";
-import { Paper, Grid, Box, useMediaQuery } from "@mui/material";
+import { Paper, Grid, Box, useMediaQuery, Skeleton } from "@mui/material";
+import LoadingSkeleton from "../errors/LoadingSkeleton";
 
 const PostList = () => {
   const allPosts = useSelector((state) => state.post.posts);
@@ -25,7 +26,20 @@ const PostList = () => {
   return (
     <>
       {status === "loading" ? (
-        <LoadingBar />
+        [1, 2, 3].map((l, i) => (
+          <Stack
+            spacing={3}
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            sx={{
+              pt: 3,
+            }}
+            key={i}
+          >
+            <LoadingSkeleton />
+          </Stack>
+        ))
       ) : (
         <Stack
           spacing={3}
@@ -45,7 +59,7 @@ const PostList = () => {
           ))}
         </Stack>
       )}
-      {!isDesktop  && (
+      {!isDesktop && (
         <Box sx={{ position: "sticky", bottom: 0, width: "100%" }}>
           <BottomNavigation />
         </Box>
