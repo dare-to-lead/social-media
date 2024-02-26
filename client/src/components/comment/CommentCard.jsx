@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography, Box, Divider } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Typography, Box, IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CommentCard = ({ comment }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -14,6 +14,7 @@ const CommentCard = ({ comment }) => {
           p: 2,
           borderRadius: "5px",
           bgcolor: "black",
+          minWidth:"300px"
         }}
       >
         <Box>
@@ -22,19 +23,7 @@ const CommentCard = ({ comment }) => {
           </Typography>
           <Typography>{comment.content}</Typography>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <FavoriteBorderIcon sx={{ fontSize: "1rem", cursor: "pointer" }} />
-          <Typography sx={{ fontSize: "0.8rem", cursor: "pointer" }}>
-            0
-          </Typography>
-        </Box>
+       {comment.user.username===userData.username && <IconButton><DeleteIcon/></IconButton>}
       </Box>
     </>
   );
