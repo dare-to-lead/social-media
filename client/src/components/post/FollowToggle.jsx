@@ -29,7 +29,7 @@ const FollowToggle = ({ isFollowing, handleFollow }) => {
         </IconButton>
       ) : (
         <IconButton onClick={handleFollow}>
-          <PersonAddIcon sx={{ fontSize: "2rem", color:"gray" }} />
+          <PersonAddIcon sx={{ fontSize: "2rem" }} />
         </IconButton>
       )}
     </>

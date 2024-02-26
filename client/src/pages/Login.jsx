@@ -1,61 +1,76 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  CssBaseline,
-  TextField,
-  Link,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  Button,
-  createTheme,
-  ThemeProvider,
-  CircularProgress,
-} from "@mui/material";
+import React, { useState } from "react";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slices/userSlice";
-import Copyright from "../components/CopyRight";
 
-import axios from "axios";
-import Notification from "../components/errors/Notification";
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}>
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-const Login = () => {
+export default function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [snackData, setSnackData] = useState({ success: true, message: "" });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const history = useNavigate();
+  const [inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        data
-      );
-      if (response.status === 200) {
-        setSnackData({ success: true, message: "logged in successfully" });
-        setOpen(true);
-        dispatch(login(response.data));
-        setTimeout(() => {
-          setLoading(false);
-          navigate("/");
-        }, 1000);
-      }
-    } catch (error) {
-      setLoading(false);
-      setSnackData({ success: false, message: "Enter Valid Email/Password" });
-      setOpen(true);
-    }
+  const handleChange = (e) => {
+    setInputs((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const sendRequest = () => {
+    dispatch(
+      login({
+        email: inputs.email,
+        password: inputs.password,
+      })
+    );
+    // const response = await axios
+    //   .post("http://localhost:8080/api/login", {
+    //     email: inputs.email,
+    //     password: inputs.password,
+    //   })
+    //   .catch((err) => console.log(err));
+    // const data = await response.data;
+    // return data;
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendRequest();
+    history("/");
   };
 
   return (
@@ -68,74 +83,50 @@ const Login = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          }}>
           <Typography component="h1" variant="h5">
             Login
           </Typography>
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 3 }}
-          >
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  {...register("email", {
-                    required: "Email is required",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Enter a valid email address",
-                    },
-                  })}
                   required
                   fullWidth
+                  value={inputs.email}
+                  onChange={handleChange}
                   id="email"
                   label="Email Address"
+                  name="email"
                   autoComplete="email"
                 />
-                {errors.email && (
-                  <Typography variant="caption" color="error">
-                    {errors.email.message}
-                  </Typography>
-                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
                   required
                   fullWidth
+                  value={inputs.password}
+                  onChange={handleChange}
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                 />
-                {errors.password && (
-                  <Typography variant="caption" color="error">
-                    {errors.password.message}
-                  </Typography>
-                )}
               </Grid>
             </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={loading}
-            >
-              {loading ? <CircularProgress /> : "Login"}
+              sx={{ mt: 3, mb: 2 }}>
+              Login
             </Button>
-            <Grid container justifyContent="space-between">
-              <Grid item>
-                <Link href="/forgotpassword" variant="body2">
-                  Forgot password
-                </Link>
-              </Grid>
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signup" variant="body2">
                   Don't have an account? Sign Up
@@ -146,9 +137,6 @@ const Login = () => {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-      <Notification open={open} setOpen={setOpen} snackData={snackData} />
     </ThemeProvider>
   );
-};
-
-export default Login;
+}

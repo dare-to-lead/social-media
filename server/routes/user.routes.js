@@ -13,7 +13,7 @@ import upload from "../middleware/multer.middleware.js";
 const userRouter = express.Router();
 
 userRouter.get("/allUsers", getAllusers);
-userRouter.get("/:id", getUser);
+userRouter.get("/", getUser);
 userRouter.put("/verified/:id", verified);
 userRouter.put("/:id", editUser);
 userRouter.put("/avatar/:id", upload.single("image"), editProfilePicture);

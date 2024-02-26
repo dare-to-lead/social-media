@@ -16,7 +16,6 @@ const getUser = async (req, res) => {
   } catch (error) {}
 };
 
-
 const editUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -37,18 +36,30 @@ const editUser = async (req, res) => {
 
 const editProfilePicture = async (req, res) => {
   try {
+    // Check if file exists in request
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded." });
     }
+
     const { path } = req.file;
     const { id } = req.params;
+
+    // Upload image to Cloudinary
     const cloudinaryResponse = await uploadOnCloudinary(path);
+
+    // Find user by ID
     const editedUser = await User.findById(id);
     if (!editedUser) {
       return res.status(404).json({ message: "User not found." });
     }
+
+    // Update user profile picture URL
     editedUser.profilePicture = cloudinaryResponse.secure_url;
+
+    // Save changes
     await editedUser.save();
+
+    // Respond with updated user data
     res.status(201).json(editedUser);
   } catch (error) {
     console.error(error.message);
@@ -58,18 +69,30 @@ const editProfilePicture = async (req, res) => {
 
 const editCoverPicture = async (req, res) => {
   try {
+    // Check if file exists in request
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded." });
     }
+
     const { path } = req.file;
     const { id } = req.params;
+
+    // Upload image to Cloudinary
     const cloudinaryResponse = await uploadOnCloudinary(path);
+
+    // Find user by ID
     const editedUser = await User.findById(id);
     if (!editedUser) {
       return res.status(404).json({ message: "User not found." });
     }
+
+    // Update user profile picture URL
     editedUser.coverPicture = cloudinaryResponse.secure_url;
+
+    // Save changes
     await editedUser.save();
+
+    // Respond with updated user data
     res.status(201).json(editedUser);
   } catch (error) {
     console.error(error.message);
@@ -88,6 +111,7 @@ const deleteUser = async (req, res) => {
 const verified = async (req, res) => {
   try {
     const { id } = req.params;
+    // console.log("id", id);
     const user = await User.findById(id);
     console.log("user", user);
     user.verified = !user.verified;

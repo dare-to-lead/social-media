@@ -2,27 +2,31 @@ import User from "../model/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import sendMail from "../utils/mail.js";
 dotenv.config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res) => {
-  const { username, email, password, firstname, lastname } = req.body;
-  console.log(req.body)
+  const { username, email, password, firstName, lastName } = req.body;
+
   try {
     let existingUser = await User.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
+
     const hashedPassword = bcrypt.hashSync(password);
+
+    // Create new user instance with profile picture URL
     const user = new User({
       username,
       email,
-      firstName:firstname,
-      lastName:lastname,
+      firstName,
+      lastName,
       password: hashedPassword,
     });
+
     await user.save();
+
     return res.status(201).json(user);
   } catch (error) {
     console.error(error);
@@ -31,7 +35,9 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log("Hi");
   const { email, password } = req.body;
+
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -48,12 +54,15 @@ const login = async (req, res) => {
   const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, {
     expiresIn: "1d",
   });
+
   res.cookie(String(existingUser._id), token, {
     path: "/",
     expires: new Date(Date.now() + 1000 * 24 * 60 * 60),
     httpOnly: true,
     sameSite: "lax",
   });
+  // // console.log("Token:", token);
+  // // console.log("Cookie:", res.getHeaders()["set-cookie"]);
   return res
     .status(200)
     .json({ message: "Successfully logged in", user: existingUser, token });
@@ -83,42 +92,6 @@ const verifyToken = (req, res, next) => {
     req.id = user.id;
   });
   next();
-};
-
-const forgotPassword = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const existingUser = await User.findOne({ email });
-    // console.log(existingUser)
-    if (!existingUser) {
-      return res.status(404).json({ message: "User does not exist" });
-    }
-    const pass = `${existingUser.role}@${Math.floor(Math.random()*10e4)}${existingUser.username}`;
-    const hashedPassword = bcrypt.hashSync(pass);
-    existingUser.password = hashedPassword;
-    await existingUser.save();
-    sendMail(email,"Password Updated", `Your new password is: ${pass}`);
-    res.status(200).json({ message: "Password updated successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-
-const logout = (req, res) => {
-  const cookies = req.headers.cookie;
-  const prevToken = cookies.split("=")[1];
-  if (!prevToken) {
-    return res.status(400).json({ message: "Couldn't find token" });
-  }
-  jwt.verify(String(prevToken), JWT_SECRET_KEY, (err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(403).json({ message: "Authentication failed" });
-    }
-    res.clearCookie(`${user.id}`);
-    return res.status(200).json({ message: "Successfully Logged Out" });
-  });
 };
 
 // const refreshToken = (req, res, next) => {
@@ -152,5 +125,19 @@ const logout = (req, res) => {
 //     next();
 //   });
 // };
-
-export { signup, login, verifyToken, logout, forgotPassword };
+const logout = (req, res) => {
+  const cookies = req.headers.cookie;
+  const prevToken = cookies.split("=")[1];
+  if (!prevToken) {
+    return res.status(400).json({ message: "Couldn't find token" });
+  }
+  jwt.verify(String(prevToken), JWT_SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(403).json({ message: "Authentication failed" });
+    }
+    res.clearCookie(`${user.id}`);
+    return res.status(200).json({ message: "Successfully Logged Out" });
+  });
+};
+export { signup, login, verifyToken, logout };

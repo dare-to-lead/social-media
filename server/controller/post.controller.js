@@ -20,7 +20,6 @@ const getPost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  console.log("create post")
   try {
     const { path } = req.file;
     const cloudinaryResponse = await uploadOnCloudinary(path);

@@ -19,8 +19,6 @@ import axios from "axios";
 import { tokens } from "../../theme";
 import FollowToggle from "./FollowToggle";
 import CommentSection from "../comment/CommentSection";
-import VerifiedIcon from "@mui/icons-material/Verified";
-import profilePic from "../../assets/profile.png"
 
 const PostCard = ({ postData }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -129,15 +127,12 @@ const PostCard = ({ postData }) => {
         >
           <Avatar
             sx={{ height: "60px", width: "60px" }}
-            src={post.user.profilePicture || profilePic}
+            src={post.user.profilePicture}
           />
           <Container>
-            <Box sx={{display:"flex", alignItems:"center", gap:1}}>
-              <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                {post.user.firstName} {post.user.lastName}
-              </Typography>
-              {post.user.verified && <VerifiedIcon sx={{color:"#00cc00"}}/>}
-            </Box>
+            <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+              {post.user.firstName} {post.user.lastName}
+            </Typography>
             <Typography variant="body2" sx={{ color: "gray" }}>
               {post?.user?.followers?.length}{" "}
               {post?.user?.followers?.length === 1 ? "follower" : "followers"}
@@ -215,11 +210,7 @@ const PostCard = ({ postData }) => {
           </IconButton>
         </CardContent>
       </Card>
-      <CommentSection
-        open={showComment}
-        setOpen={setShowComment}
-        postId={postData._id}
-      />
+      <CommentSection open={showComment} setOpen={setShowComment} postId={postData._id}/>
     </>
   );
 };
