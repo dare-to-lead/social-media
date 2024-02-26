@@ -1,9 +1,7 @@
-import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
-import { useMediaQuery, Box } from "@mui/material";
+import { useMediaQuery, Box, Grid } from "@mui/material";
 import Posts from "../components/post/Posts";
 import Trending from "../components/Trending/Trending";
-import axios from "axios";
 import Profile from "../components/userProfile/Profile";
 
 const Home = () => {

@@ -1,9 +1,7 @@
 import { Paper, Grid, useTheme, Box } from "@mui/material";
-import React from "react";
 import StoryList from "../story/StoryList";
 import PostList from "./PostList";
 import { tokens } from "../../theme";
-import BottomNavigation from "../navigation/BottomNavigation";
 
 const Posts = () => {
   const theme = useTheme();
@@ -19,19 +17,16 @@ const Posts = () => {
             sx={{
               height: "calc(100vh - 102px)",
               overflowY: "scroll",
-              '&::-webkit-scrollbar': {
-                display: 'none',
+              "&::-webkit-scrollbar": {
+                display: "none",
               },
-              msOverflowStyle: 'none',
-              scrollbarWidth: 'none',
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
               bgcolor: colors.grey[800],
             }}
           >
             <PostList />
           </Box>
-          {/* <Grid item sx={{ position: "sticky", bottom: 0, width: "100%" }}>
-            <BottomNavigation />
-          </Grid> */}
         </Grid>
       </Grid>
     </Paper>

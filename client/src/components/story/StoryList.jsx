@@ -1,5 +1,4 @@
 import { Avatar, Stack, Box, Paper, IconButton, useTheme } from "@mui/material";
-import React from "react";
 import PostButton from "./PostButton";
 import { tokens } from "../../theme";
 const StoryList = () => {
@@ -27,7 +26,7 @@ const StoryList = () => {
           }}
         >
           <PostButton />
-          {[1, 2, 3, 4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8].map((s, i) => (
+          {[1, 2,8].map((s, i) => (
             <IconButton key={i}>
               <Avatar sx={{ width: "70px", height: "70px" }}>H</Avatar>
             </IconButton>

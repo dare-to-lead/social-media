@@ -24,22 +24,15 @@ export default function CreatePost({ open, setOpen }) {
   return (
     <>
       <Dialog
-        fullScreen
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
         PaperProps={{
           sx: {
-            bgcolor: colors.grey[900],
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           },
         }}
       >
-        <Box sx={{display:'flex', flexDirection:"row-reverse", m:"20px"}}>
-          <Button autoFocus sx={{color:colors.grey[100]}} onClick={handleClose}>
-            <CloseIcon />
-          </Button>
-        </Box>
         <Box
           sx={{
             width: "100%",
@@ -48,7 +41,7 @@ export default function CreatePost({ open, setOpen }) {
             alignItems: "center",
           }}
         >
-          <PostForm />
+          <PostForm handleClose={handleClose}/>
         </Box>
       </Dialog>
     </>

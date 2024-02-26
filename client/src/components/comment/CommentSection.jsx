@@ -8,7 +8,7 @@ import { DialogTitle, Box, Typography, TextField } from "@mui/material";
 import axios from "axios";
 import Comments from "./Comments";
 
-export default function CommentSection({ setOpen, open, postId }) {
+export default function ScrollDialog({ setOpen, open, postId }) {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const [scroll, setScroll] = React.useState("paper");
   const [comments, setComments] = React.useState([]);
@@ -58,13 +58,18 @@ export default function CommentSection({ setOpen, open, postId }) {
       <Dialog
         open={open}
         onClose={handleClose}
-        scroll={scroll}
+        scroll={"paper"}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
+        sx={{ minWidth:"350px"}}
       >
-        <Box sx={{ minWidth: "350px" }}>
-          <DialogTitle id="scroll-dialog-title">Comments</DialogTitle>
-          <DialogContent dividers={scroll === "paper"}>
+        <DialogTitle id="scroll-dialog-title">Comments</DialogTitle>
+        <DialogContent dividers={scroll === "paper"}>
+          <DialogContent
+            id="scroll-dialog-description"
+            ref={descriptionElementRef}
+            tabIndex={-1}
+          >
             {comments.length === 0 ? (
               <DialogContentText
                 id="scroll-dialog-description"
@@ -79,13 +84,13 @@ export default function CommentSection({ setOpen, open, postId }) {
               ))
             )}
           </DialogContent>
-          <DialogActions>
-            <TextField fullWidth onChange={(e) => setContent(e.target.value)} />
-            <Button onClick={handleComment} variant="contained">
-              Post
-            </Button>
-          </DialogActions>
-        </Box>
+        </DialogContent>
+        <DialogActions>
+          <TextField fullWidth onChange={(e) => setContent(e.target.value)} />
+          <Button onClick={handleComment} variant="contained">
+            Post
+          </Button>
+        </DialogActions>
       </Dialog>
     </React.Fragment>
   );
