@@ -1,18 +1,16 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit, Preview } from "@mui/icons-material";
+import { Delete, Preview } from "@mui/icons-material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 const UserActions = ({ id }) => {
-  const [users, setUsers] = useState();
-
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const deleteUser = async () => {
     const res = await axios.delete(`http://localhost:8080/api/user/${id}`);
     console.log("res", res);
-    // setUsers(res.data);
   };
-
-  // deleteUser();
 
   return (
     <Box>
@@ -24,7 +22,7 @@ const UserActions = ({ id }) => {
 
       <Tooltip title="Delete this user">
         <IconButton onClick={deleteUser}>
-          <Delete />
+          <Delete sx={{ color: colors.redAccent[500] }} />
         </IconButton>
       </Tooltip>
     </Box>

@@ -37,14 +37,6 @@ const UserTable = () => {
     );
   };
 
-  const handleEdit = () => {
-    console.log("Edit user:");
-  };
-
-  const handleDelete = async () => {
-    console.log("delete user");
-  };
-
   const columns = [
     {
       field: "profilePicture",
@@ -92,7 +84,9 @@ const UserTable = () => {
       renderCell: ({ row: { role } }) => {
         return (
           <Box width="60%" borderRadius="4px">
-            {role === "admin" && <AdminPanelSettingsIcon />}
+            {role === "admin" && (
+              <AdminPanelSettingsIcon sx={{ color: colors.greenAccent[500] }} />
+            )}
             {role === "user" && <PersonIcon />}
           </Box>
         );

@@ -7,7 +7,8 @@ import UserProfile from "./pages/UserProfile";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import ProtectedRoute from "./components/ProtectedRoute";
-import UserTable from "./components/dashboard/UserTable";
+import DashboardUsers from "./pages/DashboardUsers";
+import DashboardHome from "./pages/DashboardHome";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -28,7 +29,8 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/dashboard" element={<UserTable />} />
+            <Route path="/dashboard/users" element={<DashboardUsers />} />
+            <Route path="/dashboard/home" element={<DashboardHome />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

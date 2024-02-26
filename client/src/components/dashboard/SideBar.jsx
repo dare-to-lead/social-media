@@ -20,6 +20,7 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import { Avatar, Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
 import { tokens } from "../../theme";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -73,11 +74,12 @@ const Drawer = styled(MuiDrawer, {
 export default function SideBar() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
+  const navigate = useNavigate();
   const colors = tokens(theme.palette.mode);
   const userData =
     useSelector((state) => state.user.user) ||
     JSON.parse(localStorage.getItem("userData"));
-  console.log("userdata", userData);
+  // console.log("userdata", userData);
 
   const handleDrawerCloseAndOpen = () => {
     setOpen(!open);
@@ -86,7 +88,6 @@ export default function SideBar() {
   return (
     <Box sx={{ display: "flex", bgcolor: colors.greenAccent[700] }}>
       <CssBaseline />
-      {/* <Box sx={{ bgcolor: colors.blueAccent[400] }}> */}
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerCloseAndOpen}>
@@ -102,7 +103,11 @@ export default function SideBar() {
             { text: "Help And Support", icon: <LiveHelpIcon /> },
             { text: "Charts", icon: <DonutSmallIcon /> },
           ].map((item, index) => (
-            <ListItem key={item.index} disablePadding sx={{ display: "block" }}>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => navigate("/dashboard/users")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
